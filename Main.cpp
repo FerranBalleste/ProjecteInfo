@@ -2,6 +2,31 @@
 #include <fstream>
 using namespace std;
 
+const int DIM=50;
+
+struct temps{
+	int h;
+	int m;
+	int s;
+};
+struct data{
+	string dia;
+	string mes;
+	int any;
+};
+struct tAvio{
+	int codi;
+	string model;
+	int revisio;//0-Transit, 1-Diària
+	int estat;//1-Pendent 2-Realitzat 3-Baixa
+	data d;
+	temps servei;
+	temps acabat;
+	int preu;
+};
+
+
+
 int main(){
 	ifstream dades("dades.txt");
 	string linia;
