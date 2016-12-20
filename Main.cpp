@@ -78,12 +78,15 @@ int main(){
 		}
 		N=i-1;
 		for(int i=0;i<N;i++){
-			cout<<"Producte: "<<i<<endl;
+			cout<<"Avio: "<<i<<endl;
 			cout<<"Codi: "<<avions[i].codi<<endl;
 			cout<<"Model: "<<avions[i].model<<endl;
 			cout<<"Revisio: "<<avions[i].revisio<<endl;
 			cout<<"Estat: "<<avions[i].estat<<endl;
 			cout<<"Data: "<<avions[i].d.dia<<" "<<avions[i].d.mes<< " " << avions[i].d.any <<endl;
+			cout<<"Hora de Servei: "<<avions[i].servei.h<<" "<<avions[i].servei.m<<" "<<avions[i].servei.s;
+			cout<<"Preu: "<<avions[i].preu<<endl;
+			cout<<"Nom Tecnic: "<<avions[i].tecnic<<endl;
 			}
 	}
 	
