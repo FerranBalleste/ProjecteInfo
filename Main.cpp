@@ -15,4 +15,44 @@ int main(){
 			cout<< linia;
 		}
 	}
+	int opc;
+	while (opc!=5){
+        cout << "MENU D'OPCIONS:" << endl;
+        cout << " 1. Crear " << endl;
+        cout << " 2. Modificar " << endl;
+        cout << " 3. Eliminar " << endl;
+        cout << " 4. Mostrar estadistiques " << endl;
+        cout << " 5. Sortir del programa " << endl;
+        cout << "SELECCIONEU UNA OPCIO: " << endl;
+        cin >> opc;
+        
+        switch (opc) {
+                
+            case 1:
+                //programa, accions, funcions
+                break;
+                
+            case 2:
+                //programa, accions, funcions
+                break;
+                
+            case 3:
+                //programa, accions, funcions
+                break;
+                
+            case 4:
+                //programa, accions, funcions
+                break;
+                
+            case 5:
+                break;
+                //el fatos ha sugerit fer una altra opció de guardar/descarregar el nou fitxer
+                //les variables locals s'esborren!!!! cal declarar-les objectes del prog principal
+                //no fer accions massa llargues
+            default:;
+        }// fi switch
+        
+    }//fi while
+    
+
 }
