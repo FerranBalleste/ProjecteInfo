@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 using namespace std;
 
 const int DIM=50;
@@ -23,23 +24,71 @@ struct tAvio{
 	temps servei;
 	temps acabat;
 	int preu;
+	string tecnic;
 };
 
 
 
 int main(){
+	tAvio avions[DIM];
+	
 	ifstream dades("dades.txt");
 	string linia;
+	int N;
 	
 	
 	if(dades.is_open()){
 		cout<<"Obert"<<endl;
 		int i=0;
 		while(!dades.eof()){
+			//Codi
 			getline(dades,linia,';');
-			cout<< linia;
+			avions[i].codi=atoi(linia.c_str());
+			//Model
+			getline(dades,linia,';');
+			avions[i].model=linia;
+			//Revisió
+			getline(dades,linia,';');
+			avions[i].revisio=atoi(linia.c_str());
+			//Estat
+			getline(dades,linia,';');
+			avions[i].estat=atoi(linia.c_str());
+			//Data
+			getline(dades,linia,';');
+			avions[i].d.dia=atoi(linia.c_str());
+			getline(dades,linia,';');
+			avions[i].d.mes=atoi(linia.c_str());
+			getline(dades,linia,';');
+			avions[i].d.any=linia;
+			//Hora Servei
+			getline(dades,linia,';');
+			avions[i].servei.h=atoi(linia.c_str());  //hores
+			getline(dades,linia,';');
+			avions[i].servei.m=atoi(linia.c_str());	//minuts
+			getline(dades,linia,';');
+			avions[i].servei.s=atoi(linia.c_str());	//segons
+			//Preu
+			getline(dades,linia,';');
+			avions[i].preu=atoi(linia.c_str());
+			//Nom Tecnic
+			getline(dades,linia,';');
+			avions[i].tecnic=linia;
+			
+			i++;
 		}
+		N=i-1;
+		for(int i=0;i<N;i++){
+			cout<<"Producte: "<<i<<endl;
+			
+			}
 	}
+	
+	
+	
+	
+	
+	
+	
 	int opc;
 	while (opc!=5){
         cout << "MENU D'OPCIONS:" << endl;
