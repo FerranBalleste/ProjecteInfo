@@ -55,11 +55,11 @@ int main(){
 			avions[i].estat=atoi(linia.c_str());
 			//Data
 			getline(dades,linia,';');
-			avions[i].d.dia=atoi(linia.c_str());
+			avions[i].d.dia=linia;
 			getline(dades,linia,';');
-			avions[i].d.mes=atoi(linia.c_str());
+			avions[i].d.mes=linia;
 			getline(dades,linia,';');
-			avions[i].d.any=linia;
+			avions[i].d.any=atoi(linia.c_str());
 			//Hora Servei
 			getline(dades,linia,';');
 			avions[i].servei.h=atoi(linia.c_str());  //hores
