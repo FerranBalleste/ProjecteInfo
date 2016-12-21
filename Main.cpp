@@ -72,7 +72,7 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 		return false;
 	}
 }
-void escriure_fitxer(tAvio avions[],int N){
+void escriure_avions(tAvio avions[],int N){
 	for(int i=0;i<N;i++){
 			cout<<"Avio: "<<i<<endl;
 			cout<<"Codi: "<<avions[i].codi<<endl;
@@ -80,19 +80,38 @@ void escriure_fitxer(tAvio avions[],int N){
 			cout<<"Revisio: "<<avions[i].revisio<<endl;
 			cout<<"Estat: "<<avions[i].estat<<endl;
 			cout<<"Data: "<<avions[i].d.dia<<" "<<avions[i].d.mes<< " " << avions[i].d.any <<endl;
-			cout<<"Hora de Servei: "<<avions[i].servei.h<<" "<<avions[i].servei.m<<" "<<avions[i].servei.s;
+			cout<<"Hora de Servei: "<<avions[i].servei.h<<" "<<avions[i].servei.m<<" "<<avions[i].servei.s<<endl;
 			cout<<"Preu: "<<avions[i].preu<<endl;
 			cout<<"Nom Tecnic: "<<avions[i].tecnic<<endl;
 			}
+}
+void crear_avions(tAvio avions[],int & N){
+	cout<<"Quants avions vols crear?";
+	int k;
+	cin>>k;
+	for(int i=N;i<N+k;i++){
+			cout<<"Avio: "<<i<<endl;
+			cout<<"Codi: "; 	cin>>avions[i].codi;
+			cout<<"Model: "; 	cin>>avions[i].model;
+			cout<<"Revisio: 0-Transitòria, 1-Diària";	cin>>avions[i].revisio;
+			cout<<"Estat: 1-Pendent, 2-Realitzat, 3-Baixa";	cin>>avions[i].estat;
+			cout<<"Data: Dia/Mes/Any";	cin>>avions[i].d.dia>>avions[i].d.mes>>avions[i].d.any;
+			cout<<"Hora de Servei: HMS";	cin>>avions[i].servei.h>>avions[i].servei.m>>avions[i].servei.s;
+			cout<<"Preu: ";		cin>> avions[i].preu;
+			cout<<"Nom Tecnic:";cin>>avions[i].tecnic;
+			}
+	N=N+k;
 }
 
 int main(){
 	tAvio avions[DIM];
 	int N;
 	ifstream dades("dades.txt");
+	
+	//Llegir Fitxer
 	if(llegir_fitxer(avions, N, dades)){
 		cout<<"S'ha obert correctament"<<endl;
-		escriure_fitxer(avions,N);
+		escriure_avions(avions,N);
 	}
 	else{
 		cout<<"No existeix el fitxer";
@@ -112,19 +131,24 @@ int main(){
         switch (opc) {
                 
             case 1:
-                //programa, accions, funcions
+                //programa, accions, funcions	Crear
+                crear_avions(avions,N);
+                
+                
                 break;
                 
             case 2:
-                //programa, accions, funcions
+                //programa, accions, funcions	Modificar
                 break;
                 
             case 3:
-                //programa, accions, funcions
+                //programa, accions, funcions	Eliminar
                 break;
                 
             case 4:
-                //programa, accions, funcions
+                //programa, accions, funcions	Mostrar Estadístiques
+                escriure_avions(avions,N);
+                
                 break;
                 
             case 5:
