@@ -26,19 +26,8 @@ struct tAvio{
 	int preu;
 	string tecnic;
 };
-
-
-
-int main(){
-	tAvio avions[DIM];
-	
-	ifstream dades("dades.txt");
-	string linia;
-	int N;
-	
-	
-	if(dades.is_open()){
-		cout<<"Obert"<<endl;
+bool llegir_fitxer(tAvio avions[DIM], int & N){
+	if(dades.is_open()){		
 		int i=0;
 		while(!dades.eof()){
 			//Codi
@@ -72,12 +61,18 @@ int main(){
 			avions[i].preu=atoi(linia.c_str());
 			//Nom Tecnic
 			getline(dades,linia,';');
-			avions[i].tecnic=linia;
-			
+			avions[i].tecnic=linia;	
 			i++;
 		}
 		N=i-1;
-		for(int i=0;i<N;i++){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+void escriure_fitxer(tAvio avions,int N){
+	for(int i=0;i<N;i++){
 			cout<<"Avio: "<<i<<endl;
 			cout<<"Codi: "<<avions[i].codi<<endl;
 			cout<<"Model: "<<avions[i].model<<endl;
@@ -88,14 +83,22 @@ int main(){
 			cout<<"Preu: "<<avions[i].preu<<endl;
 			cout<<"Nom Tecnic: "<<avions[i].tecnic<<endl;
 			}
+}
+
+int main(){
+	tAvio avions[DIM];
+	
+	ifstream dades("dades.txt");
+	string linia;
+	int N;
+	if(llegir_fitxer(avions,N)){
+		cout<<"S'ha obert correctament"<<endl;
+		escriure_fitxer(avions,N);
 	}
-	
-	
-	
-	
-	
-	
-	
+	else{
+		cout<<"No existeix el fitxer";
+	}
+		
 	int opc;
 	while (opc!=5){
         cout << "MENU D'OPCIONS:" << endl;
