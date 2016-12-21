@@ -3,7 +3,7 @@
 #include <stdlib.h>
 using namespace std;
 const int DIM=50;
-
+//aaaaaaaa
 struct temps{
 	int h;
 	int m;
