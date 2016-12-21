@@ -18,7 +18,7 @@ struct data{
 struct tAvio{
 	int codi;
 	string model;
-	int revisio;//0-Transit, 1-Diària
+	int revisio;//0-Transit, 1-DiÃ ria
 	int estat;//1-Pendent 2-Realitzat 3-Baixa
 	data d;
 	temps servei;
@@ -26,7 +26,8 @@ struct tAvio{
 	int preu;
 	string tecnic;
 };
-bool llegir_fitxer(tAvio avions[DIM], int & N){
+bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
+	string linia;
 	if(dades.is_open()){		
 		int i=0;
 		while(!dades.eof()){
@@ -36,7 +37,7 @@ bool llegir_fitxer(tAvio avions[DIM], int & N){
 			//Model
 			getline(dades,linia,';');
 			avions[i].model=linia;
-			//Revisió
+			//RevisiÃ³
 			getline(dades,linia,';');
 			avions[i].revisio=atoi(linia.c_str());
 			//Estat
@@ -64,14 +65,14 @@ bool llegir_fitxer(tAvio avions[DIM], int & N){
 			avions[i].tecnic=linia;	
 			i++;
 		}
-		N=i-1;
+		N=i;
 		return true;
 	}
 	else{
 		return false;
 	}
 }
-void escriure_fitxer(tAvio avions,int N){
+void escriure_fitxer(tAvio avions[],int N){
 	for(int i=0;i<N;i++){
 			cout<<"Avio: "<<i<<endl;
 			cout<<"Codi: "<<avions[i].codi<<endl;
@@ -87,11 +88,9 @@ void escriure_fitxer(tAvio avions,int N){
 
 int main(){
 	tAvio avions[DIM];
-	
-	ifstream dades("dades.txt");
-	string linia;
 	int N;
-	if(llegir_fitxer(avions,N)){
+	ifstream dades("dades.txt");
+	if(llegir_fitxer(avions, N, dades)){
 		cout<<"S'ha obert correctament"<<endl;
 		escriure_fitxer(avions,N);
 	}
@@ -130,7 +129,7 @@ int main(){
                 
             case 5:
                 break;
-                //el fatos ha sugerit fer una altra opció de guardar/descarregar el nou fitxer
+                //el fatos ha sugerit fer una altra opciÃ³ de guardar/descarregar el nou fitxer
                 //les variables locals s'esborren!!!! cal declarar-les objectes del prog principal
                 //no fer accions massa llargues
             default:;
