@@ -2,7 +2,6 @@
 #include <fstream>
 #include <stdlib.h>
 using namespace std;
-//proba
 const int DIM=50;
 
 struct temps{
@@ -91,14 +90,14 @@ void crear_avions(tAvio avions[],int & N){
 	cin>>k;
 	for(int i=N;i<N+k;i++){
 			cout<<"Avio: "<<i<<endl;
-			cout<<"Codi: "; 	cin>>avions[i].codi;
-			cout<<"Model: "; 	cin>>avions[i].model;
-			cout<<"Revisio: 0-Transitòria, 1-Diària";	cin>>avions[i].revisio;
+			cout<<"Codi: "; 								cin>>avions[i].codi;
+			cout<<"Model: "; 								cin>>avions[i].model;
+			cout<<"Revisio: 0-Transitòria, 1-Diària";		cin>>avions[i].revisio;
 			cout<<"Estat: 1-Pendent, 2-Realitzat, 3-Baixa";	cin>>avions[i].estat;
-			cout<<"Data: Dia/Mes/Any";	cin>>avions[i].d.dia>>avions[i].d.mes>>avions[i].d.any;
-			cout<<"Hora de Servei: HMS";	cin>>avions[i].servei.h>>avions[i].servei.m>>avions[i].servei.s;
-			cout<<"Preu: ";		cin>> avions[i].preu;
-			cout<<"Nom Tecnic:";cin>>avions[i].tecnic;
+			cout<<"Data: Dia/Mes/Any";						cin>>avions[i].d.dia>>avions[i].d.mes>>avions[i].d.any;
+			cout<<"Hora de Servei: HMS";					cin>>avions[i].servei.h>>avions[i].servei.m>>avions[i].servei.s;
+			cout<<"Preu: ";									cin>> avions[i].preu;
+			cout<<"Nom Tecnic:";							cin>>avions[i].tecnic;
 			}
 	N=N+k;
 }
@@ -124,7 +123,7 @@ int main(){
         cout << " 2. Modificar " << endl;
         cout << " 3. Eliminar " << endl;
         cout << " 4. Mostrar estadistiques " << endl;
-        cout << " 5. Sortir del programa " << endl;
+        cout << " 5. Sortir del programa " << endl;  
         cout << "SELECCIONEU UNA OPCIO: " << endl;
         cin >> opc;
         
@@ -152,13 +151,17 @@ int main(){
                 break;
                 
             case 5:
-                break;
-                //el fatos ha sugerit fer una altra opciÃƒÂ³ de guardar/descarregar el nou fitxer
-                //les variables locals s'esborren!!!! cal declarar-les objectes del prog principal
-                //no fer accions massa llargues
+                cout<<"Estas segur que vols sortir? Y/N"<<endl;
+                char sortir;
+                cin>>sortir;
+                if(sortir!='Y' && sortir!='y')
+                	opc=0;
+				break;
             default:;
         }// fi switch
         
+        
+        dades.close();
     }//fi while
     
 
