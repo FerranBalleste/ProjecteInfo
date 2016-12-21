@@ -2,7 +2,7 @@
 #include <fstream>
 #include <stdlib.h>
 using namespace std;
-
+//proba
 const int DIM=50;
 
 struct temps{
