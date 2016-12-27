@@ -3,7 +3,7 @@
 #include <stdlib.h>
 using namespace std;
 const int DIM=50;
-//aaaaaaaa
+
 struct temps{
 	int h;
 	int m;
@@ -17,26 +17,29 @@ struct data{
 struct tAvio{
 	string codi;
 	string model;
-	int revisio;//0-Transit, 1-DiÃƒÂ ria
-	int estat;//1-Pendent 2-Realitzat 3-Baixa
+	int revisio;	//0-Transit, 1-Diaria
+	int estat;		//1-Pendent 2-Realitzat 3-Baixa
 	data d;
 	temps servei;
 	temps acabat;
 	int preu;
 	string tecnic;
 };
+bool fitxer_buit(ifstream & dades){
+	return dades.peek();								//Mira si hi ha res al fitxer, funció incorporada a fstream
+}
 bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 	string linia;
 	if(dades.is_open()){		
 		int i=0;
-		while(!dades.eof()){
+		while(!dades.eof() && !fitxer_buit){ 			//Llegir fins al final del fitxer, no llegir si no hi ha res
 			//Codi
 			getline(dades,linia,';');
 			avions[i].codi=linia;
 			//Model
 			getline(dades,linia,';');
 			avions[i].model=linia;
-			//RevisiÃƒÂ³
+			//Revisio
 			getline(dades,linia,';');
 			avions[i].revisio=atoi(linia.c_str());
 			//Estat
@@ -56,6 +59,13 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 			avions[i].servei.m=atoi(linia.c_str());	//minuts
 			getline(dades,linia,';');
 			avions[i].servei.s=atoi(linia.c_str());	//segons
+			//Hora Servei
+			getline(dades,linia,';');
+			avions[i].acabat.h=atoi(linia.c_str());  //hores
+			getline(dades,linia,';');
+			avions[i].acabat.m=atoi(linia.c_str());	//minuts
+			getline(dades,linia,';');
+			avions[i].acabat.s=atoi(linia.c_str());	//segons
 			//Preu
 			getline(dades,linia,';');
 			avions[i].preu=atoi(linia.c_str());
@@ -71,7 +81,7 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 		return false;
 	}
 }
-void escriure_avions(tAvio avions[],int N){
+void escriure_avions(tAvio avions[],int N){      //Mostra el contingut de la taula d'avions per pantalla
 	for(int i=0;i<N;i++){
 			cout<<"Avio: "<<i<<endl;
 			cout<<"Codi: "<<avions[i].codi<<endl;
@@ -80,63 +90,71 @@ void escriure_avions(tAvio avions[],int N){
 			cout<<"Estat: "<<avions[i].estat<<endl;
 			cout<<"Data: "<<avions[i].d.dia<<" "<<avions[i].d.mes<< " " << avions[i].d.any <<endl;
 			cout<<"Hora de Servei: "<<avions[i].servei.h<<" "<<avions[i].servei.m<<" "<<avions[i].servei.s<<endl;
+			cout<<"Acabat: "<<avions[i].acabat.h<<" "<<avions[i].acabat.m<<" "<<avions[i].acabat.s<<endl;
 			cout<<"Preu: "<<avions[i].preu<<endl;
 			cout<<"Nom Tecnic: "<<avions[i].tecnic<<endl;
 			}
 }
-bool mirar_num(string aux, int min, int max){
-	int a=atoi(aux.c_str());
-	if(a>=min && a<=max){
-		return true;
-	}
-	else return false;
-}
-void mirar_string(string & aux){
-	char a;
-	cout<<"Es correcte?  Y/N";
-	cin>>a;
-	while(a!='Y' && a!='y'){
-		cout<<"Torna a escriure"<<endl;
-		cin>>aux;
-		cout<<"Es correcte?  Y/N";
+
+void mirar_enter_correcte(int & a, int inf, int sup){   //Comprovar que s'ha introduit un enter dins el rang corresponent i no un string
+	while(! (cin >> a) && (a<inf || a>sup)){
+		cout<<"Numero Incorrecte, Confirma que pertany a les opcions";
 		cin>>a;
 	}
 }
 void crear_avions(tAvio avions[],int & N){
 	cout<<"Quants avions vols crear?";
-	string aux;
+	string straux;  //string auxiliar per no escriure directament
+	int intaux;		//enter auxiliar per no escriure directament i poder comprovar si es correcte
 	int k;
 	cin>>k;
 	for(int i=N;i<N+k;i++){
 			cout<<"Avio: "<<i<<endl;
-			cout<<"Codi: ";
-				cin>>aux;
-				mirar_string(aux);
-				avions[i].codi=aux;
-			cout<<"Model: ";
-				cin>>aux;
-				mirar_string(aux);
-				avions[i].model=aux;
-			cout<<"Revisio: 0-Transitòria, 1-Diària";		cin>>avions[i].revisio;
+			cout<<"Codi: ";		cin>>straux;	avions[i].codi=straux;
+			cout<<"Model: ";	cin>>straux;	avions[i].model=straux;
+			cout<<"Revisio: 0-Transitòria, 1-Diària:	";		
+			cin>>intaux;
+			mirar_enter_correcte(intaux, 0, 1);
+			avions[i].revisio=intaux;
 			cout<<"Estat: 0-Pendent, 1-Realitzat, 2-Baixa";	cin>>avions[i].estat;
 			cout<<"Data: Dia/Mes/Any";						cin>>avions[i].d.dia>>avions[i].d.mes>>avions[i].d.any;
 			cout<<"Hora de Servei: HMS";					cin>>avions[i].servei.h>>avions[i].servei.m>>avions[i].servei.s;
+			cout<<"Acabat: HMS";							cin>>avions[i].acabat.h>>avions[i].acabat.m>>avions[i].acabat.s;
 			cout<<"Preu: ";									cin>> avions[i].preu;
-			cout<<"Nom Tecnic:";
-				cin>>aux;
-				mirar_string(aux);
-				avions[i].tecnic=aux;
+			cout<<"Nom Tecnic:"; cin>>straux; avions[i].tecnic=straux;
 			}
 	N=N+k;
+}
+void guardar(tAvio avions[], int N, ofstream & dades){
+	for(int i=0; i<N; i++){
+		dades << avions[i].codi << ';';
+		dades << avions[i].model << ';';
+		dades << avions[i].revisio << ';';
+		dades << avions[i].estat << ';';
+		dades << avions[i].d.dia << ';';
+		dades << avions[i].d.mes << ';';
+		dades << avions[i].d.any << ';';
+		dades << avions[i].servei.h << ';';
+		dades << avions[i].servei.m << ';';
+		dades << avions[i].servei.s << ';';
+		dades << avions[i].acabat.h << ';';
+		dades << avions[i].acabat.m << ';';
+		dades << avions[i].acabat.s << ';';
+		dades << avions[i].preu << ';';
+		dades << avions[i].tecnic << ';';
+		cout<<"S'ha guardat correctament";
+		
+	}
 }
 
 int main(){
 	tAvio avions[DIM];
 	int N;
-	ifstream dades("dades.txt");
+	ifstream indades("dades.txt");
+	ofstream ofdades("dades.txt");
 	
 	//Llegir Fitxer
-	if(llegir_fitxer(avions, N, dades)){
+	if(llegir_fitxer(avions, N, indades)){
 		cout<<"S'ha obert correctament"<<endl;
 		escriure_avions(avions,N);
 	}
@@ -184,13 +202,17 @@ int main(){
                 cin>>sortir;
                 if(sortir!='Y' && sortir!='y')
                 	opc=0;
+                else{
+               		guardar(avions, N, ofdades);
+            	}
 				break;
             default:;
         }// fi switch
         
         
-        dades.close();
+        
     }//fi while
     
-
+indades.close();
+ofdades.close();
 }
