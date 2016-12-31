@@ -95,33 +95,67 @@ void escriure_avions(tAvio avions[],int N){      //Mostra el contingut de la tau
 			cout<<"Nom Tecnic: "<<avions[i].tecnic<<endl;
 			}
 }
-
-void mirar_enter_correcte(int & a, int inf, int sup){   //Comprovar que s'ha introduit un enter dins el rang corresponent i no un string
-	while(! (cin >> a) && (a<inf || a>sup)){
-		cout<<"Numero Incorrecte, Confirma que pertany a les opcions";
-		cin>>a;
+void obtenir_enter(int & input){
+	while (!(cin >> input)) {
+	    cin.clear();
+	    cin.ignore(256, '\n');
+	    cout << "No es un enter, torna a intentar:  ";
+	}
+}
+void obtenir_enter_rang(int & input, int min, int max){
+	obtenir_enter(input);
+	while(input<max || input>max){
+		cout << "No forma part del rang, torna a intentar:  ";
+		obtenir_enter(input);
 	}
 }
 void crear_avions(tAvio avions[],int & N){
 	cout<<"Quants avions vols crear?";
-	string straux;  //string auxiliar per no escriure directament
-	int intaux;		//enter auxiliar per no escriure directament i poder comprovar si es correcte
+	string str;  //string auxiliar per no escriure directament
+	int enter;		//enter auxiliar per no escriure directament i poder comprovar si es correcte
 	int k;
 	cin>>k;
 	for(int i=N;i<N+k;i++){
 			cout<<"Avio: "<<i<<endl;
-			cout<<"Codi: ";		cin>>straux;	avions[i].codi=straux;
-			cout<<"Model: ";	cin>>straux;	avions[i].model=straux;
+			cout<<"Codi: ";
+				cin>>str;
+				avions[i].codi=str;
+			cout<<"Model: ";
+				cin>>str;
+				avions[i].model=str;
 			cout<<"Revisio: 0-Transitòria, 1-Diària:	";		
-			cin>>intaux;
-			mirar_enter_correcte(intaux, 0, 1);
-			avions[i].revisio=intaux;
-			cout<<"Estat: 0-Pendent, 1-Realitzat, 2-Baixa";	cin>>avions[i].estat;
-			cout<<"Data: Dia/Mes/Any";						cin>>avions[i].d.dia>>avions[i].d.mes>>avions[i].d.any;
-			cout<<"Hora de Servei: HMS";					cin>>avions[i].servei.h>>avions[i].servei.m>>avions[i].servei.s;
-			cout<<"Acabat: HMS";							cin>>avions[i].acabat.h>>avions[i].acabat.m>>avions[i].acabat.s;
-			cout<<"Preu: ";									cin>> avions[i].preu;
-			cout<<"Nom Tecnic:"; cin>>straux; avions[i].tecnic=straux;
+				obtenir_enter_rang(enter,0,1);
+				avions[i].revisio=enter;
+			cout<<"Estat: 0-Pendent, 1-Realitzat, 2-Baixa";
+				obtenir_enter_rang(enter,0,1);
+				avions[i].estat=enter;
+			cout<<"Data: Dia/Mes/Any";
+				obtenir_enter_rang(enter,1,31);
+				avions[i].d.dia=enter;
+				obtenir_enter_rang(enter,1,12);
+				avions[i].d.mes
+				obtenir_enter_rang(enter,2000,2200);
+				avions[i].d.any;
+			cout<<"Hora de Servei: HMS";
+				obtenir_enter_rang(enter,0,23);
+				avions[i].servei.h=enter;
+				obtenir_enter_rang(enter,0,59);
+				avions[i].servei.m=enter;
+				obtenir_enter_rang(enter,0,59);
+				avions[i].servei.s=enter;			
+			cout<<"Acabat: HMS";
+				obtenir_enter_rang(enter,0,23);
+				avions[i].acabat.h=enter;
+				obtenir_enter_rang(enter,0,59);
+				avions[i].acabat.m=enter;
+				obtenir_enter_rang(enter,0,59);
+				avions[i].acabat.s=enter;
+			cout<<"Preu: ";
+				obtenir_enter(enter);
+				avions[i].preu=enter;
+			cout<<"Nom Tecnic:"; 
+				cin>>str; 
+				avions[i].tecnic=str;
 			}
 	N=N+k;
 }
