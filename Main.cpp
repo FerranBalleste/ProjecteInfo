@@ -210,7 +210,6 @@ int main(){
 	//Llegir Fitxer
 	if(llegir_fitxer(avions, N, indades)){
 		cout<<"S'ha obert correctament"<<endl;
-		escriure_avions(avions,N);
 		cout<<endl;
 	}
 	else{
