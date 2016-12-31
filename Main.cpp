@@ -10,8 +10,8 @@ struct temps{
 	int s;
 };
 struct data{
-	string dia;
-	string mes;
+	int dia;
+	int mes;
 	int any;
 };
 struct tAvio{
@@ -25,14 +25,11 @@ struct tAvio{
 	int preu;
 	string tecnic;
 };
-bool fitxer_buit(ifstream & dades){
-	return dades.peek();								//Mira si hi ha res al fitxer, funció incorporada a fstream
-}
 bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 	string linia;
 	if(dades.is_open()){		
 		int i=0;
-		while(!dades.eof()){// && !fitxer_buit){ 			//Llegir fins al final del fitxer, no llegir si no hi ha res
+		while(!dades.eof()){	//Llegir fins al final del fitxer, no llegir si no hi ha res
 			//Codi
 			getline(dades,linia,';');
 			avions[i].codi=linia;
@@ -159,6 +156,30 @@ void crear_avions(tAvio avions[],int & N){
 			}
 	N=N+k;
 }
+void igualar_taula(tAvio avions[],int b , int a){ //a = posicio inicial, b = posicio final
+	avions[b].codi=avions[a].codi;
+	avions[b].model=avions[a].model;
+	avions[b].revisio=avions[a].revisio;
+	avions[b].estat=avions[a].estat;
+	avions[b].d.dia=avions[a].d.dia;
+	avions[b].d.mes=avions[a].d.mes;
+	avions[b].d.any=avions[a].d.any;
+	avions[b].servei.h=avions[a].servei.h;
+	avions[b].servei.m=avions[a].servei.m;
+	avions[b].servei.s=avions[a].servei.s;
+	avions[b].acabat.h=	avions[a].acabat.h;
+	avions[b].acabat.m=avions[a].acabat.m;
+	avions[b].acabat.s=avions[a].acabat.s;
+	avions[b].preu=avions[a].preu;
+	avions[b].tecnic=avions[a].tecnic;
+}
+void eliminar_element(tAvio avions[], int & N, int c){
+	cout<<N;
+	for(int i=c-1; i<N; i++){
+		igualar_taula(avions,i,i+1);
+	}
+	N=N-1;
+}
 void guardar(tAvio avions[], int N, ofstream & dades){
 	for(int i=0; i<N; i++){
 		dades << avions[i].codi << ';';
@@ -196,7 +217,8 @@ int main(){
 		cout<<"No existeix el fitxer dades.txt";
 	}
 		
-	int opc,opc2;
+	int opc,opc2,pos;  //opc s'utilitza en el menu principal, opc2 en el secundari, pos es auxiliar
+	
 	while (opc!=5){
         cout << "MENU D'OPCIONS:" << endl;
         cout << " 1. Crear " << endl;
@@ -254,6 +276,10 @@ int main(){
 					case 3:
 						break;
 					case 4:
+						escriure_avions(avions,N);
+						cout<<"Introduir posicio de l'avio a eliminar: ";
+						cin>>pos;
+						eliminar_element(avions,N,pos);
 						break;
 					default:;
 				}
