@@ -17,7 +17,7 @@ struct data{
 struct tAvio{
 	string codi;
 	string model;
-	int revisio;	//0-Transit, 1-Diaria
+	int revisio;	//1-Transit, 2-Diaria
 	int estat;		//1-Pendent 2-Realitzat 3-Baixa
 	data d;
 	temps servei;
@@ -92,7 +92,7 @@ void escriure_avions(tAvio avions[],int N){      //Mostra el contingut de la tau
 			cout<<"Hora de Servei: "<<avions[i].servei.h<<" "<<avions[i].servei.m<<" "<<avions[i].servei.s<<endl;
 			cout<<"Acabat: "<<avions[i].acabat.h<<" "<<avions[i].acabat.m<<" "<<avions[i].acabat.s<<endl;
 			cout<<"Preu: "<<avions[i].preu<<endl;
-			cout<<"Nom Tecnic: "<<avions[i].tecnic<<endl;
+			cout<<"Nom Tecnic: "<<avions[i].tecnic<<endl<<endl;
 			}
 }
 void obtenir_enter(int & input){
@@ -104,7 +104,7 @@ void obtenir_enter(int & input){
 }
 void obtenir_enter_rang(int & input, int min, int max){
 	obtenir_enter(input);
-	while(input<max || input>max){
+	while(input<min || input>max){
 		cout << "No forma part del rang, torna a intentar:  ";
 		obtenir_enter(input);
 	}
@@ -116,34 +116,34 @@ void crear_avions(tAvio avions[],int & N){
 	int k;
 	cin>>k;
 	for(int i=N;i<N+k;i++){
-			cout<<"Avio: "<<i<<endl;
+			cout<<"Avio: "<<i+1<<endl;
 			cout<<"Codi: ";
 				cin>>str;
 				avions[i].codi=str;
 			cout<<"Model: ";
 				cin>>str;
 				avions[i].model=str;
-			cout<<"Revisio: 0-Transitòria, 1-Diària:	";		
-				obtenir_enter_rang(enter,0,1);
+			cout<<"Revisio: (1-Transitòria, 2-Diària)	";		
+				obtenir_enter_rang(enter,1,2);
 				avions[i].revisio=enter;
-			cout<<"Estat: 0-Pendent, 1-Realitzat, 2-Baixa";
-				obtenir_enter_rang(enter,0,1);
+			cout<<"Estat: (1-Pendent, 2-Realitzat, 3-Baixa)		";
+				obtenir_enter_rang(enter,1,3);
 				avions[i].estat=enter;
-			cout<<"Data: Dia/Mes/Any";
+			cout<<"Data: (Dia/Mes/Any)		";
 				obtenir_enter_rang(enter,1,31);
 				avions[i].d.dia=enter;
 				obtenir_enter_rang(enter,1,12);
-				avions[i].d.mes
+				avions[i].d.mes;
 				obtenir_enter_rang(enter,2000,2200);
 				avions[i].d.any;
-			cout<<"Hora de Servei: HMS";
+			cout<<"Hora de Servei: (HMS) 		";
 				obtenir_enter_rang(enter,0,23);
 				avions[i].servei.h=enter;
 				obtenir_enter_rang(enter,0,59);
 				avions[i].servei.m=enter;
 				obtenir_enter_rang(enter,0,59);
 				avions[i].servei.s=enter;			
-			cout<<"Acabat: HMS";
+			cout<<"Acabat: (HMS) 		";
 				obtenir_enter_rang(enter,0,23);
 				avions[i].acabat.h=enter;
 				obtenir_enter_rang(enter,0,59);
@@ -176,7 +176,6 @@ void guardar(tAvio avions[], int N, ofstream & dades){
 		dades << avions[i].acabat.s << ';';
 		dades << avions[i].preu << ';';
 		dades << avions[i].tecnic << ';';
-		cout<<"S'ha guardat correctament";
 		
 	}
 }
@@ -185,18 +184,19 @@ int main(){
 	tAvio avions[DIM];
 	int N;
 	ifstream indades("dades.txt");
-	ofstream ofdades("dades.txt");
+	ofstream ofdades("dades2.txt");
 	
 	//Llegir Fitxer
 	if(llegir_fitxer(avions, N, indades)){
 		cout<<"S'ha obert correctament"<<endl;
 		escriure_avions(avions,N);
+		cout<<endl;
 	}
 	else{
-		cout<<"No existeix el fitxer";
+		cout<<"No existeix el fitxer dades.txt";
 	}
 		
-	int opc;
+	int opc,opc2;
 	while (opc!=5){
         cout << "MENU D'OPCIONS:" << endl;
         cout << " 1. Crear " << endl;
@@ -206,6 +206,7 @@ int main(){
         cout << " 5. Sortir del programa " << endl;  
         cout << "SELECCIONEU UNA OPCIO: " << endl;
         cin >> opc;
+        cout<<endl;
         
         switch (opc) {
                 
@@ -218,10 +219,44 @@ int main(){
                 
             case 2:
                 //programa, accions, funcions	Modificar
+                cout<<"Criteri de busca per trobar avio a modificar: "<<endl;
+                cout<<"1.Codi"<<endl;
+                cout<<"2.Model"<<endl;
+                cout<<"3.Preu"<<endl;
+                cout<<"4.Mostrar tots els avions sense ordenar"<<endl;
+                obtenir_enter_rang(opc2,1,4);
+                switch(opc2){
+					case 1:
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					case 4:
+						break;
+					default:;
+				}
                 break;
                 
             case 3:
                 //programa, accions, funcions	Eliminar
+                cout<<"Criteri de busca per trobar avio a eliminar: "<<endl;
+                cout<<"1.Codi"<<endl;
+                cout<<"2.Model"<<endl;
+                cout<<"3.Preu"<<endl;
+                cout<<"4.Mostrar tots els avions sense ordenar"<<endl;
+                obtenir_enter_rang(opc2,1,4);
+                switch(opc2){
+					case 1:
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					case 4:
+						break;
+					default:;
+				}
                 break;
                 
             case 4:
@@ -238,6 +273,7 @@ int main(){
                 	opc=0;
                 else{
                		guardar(avions, N, ofdades);
+               		cout<<"S'ha guardat correctament";
             	}
 				break;
             default:;
