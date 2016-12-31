@@ -32,7 +32,7 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 	string linia;
 	if(dades.is_open()){		
 		int i=0;
-		while(!dades.eof() && !fitxer_buit){ 			//Llegir fins al final del fitxer, no llegir si no hi ha res
+		while(!dades.eof()){// && !fitxer_buit){ 			//Llegir fins al final del fitxer, no llegir si no hi ha res
 			//Codi
 			getline(dades,linia,';');
 			avions[i].codi=linia;
@@ -47,9 +47,9 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 			avions[i].estat=atoi(linia.c_str());
 			//Data
 			getline(dades,linia,';');
-			avions[i].d.dia=linia;
+			avions[i].d.dia=atoi(linia.c_str());
 			getline(dades,linia,';');
-			avions[i].d.mes=linia;
+			avions[i].d.mes=atoi(linia.c_str());
 			getline(dades,linia,';');
 			avions[i].d.any=atoi(linia.c_str());
 			//Hora Servei
@@ -74,7 +74,7 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 			avions[i].tecnic=linia;	
 			i++;
 		}
-		N=i;
+		N=i-1;    //Resta l'error de eof
 		return true;
 	}
 	else{
@@ -83,7 +83,7 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 }
 void escriure_avions(tAvio avions[],int N){      //Mostra el contingut de la taula d'avions per pantalla
 	for(int i=0;i<N;i++){
-			cout<<"Avio: "<<i<<endl;
+			cout<<"Avio: "<<i+1<<endl;
 			cout<<"Codi: "<<avions[i].codi<<endl;
 			cout<<"Model: "<<avions[i].model<<endl;
 			cout<<"Revisio: "<<avions[i].revisio<<endl;
