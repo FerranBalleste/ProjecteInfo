@@ -195,20 +195,19 @@ void ordenar(tAvio avions[],int N, int opcio){    //Ordenacio per Seleccio
 		}
 	}
 }
-void cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòmica
+int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòmica
 	int centre, inf=0, sup=N-1;
 	while(inf<=sup){
 		centre=(sup+inf)/2;
 		if(opcio==1){
 			if(avions[centre].codi==str){
-				inf=centre;
-				sup=centre;
-				for(int a=inf; avions[centre].codi==avions[a].codi; a--)   //Delimita el marge en que es compleix
-					inf=a;
-				for(int a=inf; avions[centre].codi==avions[a].codi; a++)
-					sup=a;
-				escriure_avions(avions,sup,inf);
-			}
+				escriure_avions(avions,centre,centre);
+				return centre;
+			}else if(str < avions[centre].codi ){
+		    	sup=centre-1;
+		    }else {
+		       inf=centre+1;
+		     }
 		}
 	}
 }
