@@ -78,8 +78,8 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 		return false;
 	}
 }
-void escriure_avions(tAvio avions[],int N){      //Mostra el contingut de la taula d'avions per pantalla
-	for(int i=0;i<N;i++){
+void escriure_avions(tAvio avions[],int N, int inf){      //Mostra el contingut de la taula d'avions per pantalla
+	for(int i=inf;i<N;i++){
 			cout<<"Avio: "<<i+1<<endl;
 			cout<<"Codi: "<<avions[i].codi<<endl;
 			cout<<"Model: "<<avions[i].model<<endl;
@@ -108,7 +108,7 @@ void obtenir_enter_rang(int & input, int min, int max){
 }
 void crear_avions(tAvio avions[],int & N){
 	cout<<"Quants avions vols crear?";
-	string str;  //string auxiliar per no escriure directament
+	string str;  	//string auxiliar per no escriure directament
 	int enter;		//enter auxiliar per no escriure directament i poder comprovar si es correcte
 	int k;
 	cin>>k;
@@ -173,7 +173,46 @@ void igualar_taula(tAvio avions[],int b , int a){ //a = posicio inicial, b = pos
 	avions[b].preu=avions[a].preu;
 	avions[b].tecnic=avions[a].tecnic;
 }
-void eliminar_element(tAvio avions[], int & N, int c){
+void ordenar(tAvio avions[],int N, int opcio){    //Ordenacio per Seleccio
+	int min; //Index del valor més petit
+	for(int i=0;i<N-1;i++){
+		min=i;
+		if(opcio==1){						//Codi
+			for(int k=i+1;k<N;k++){
+				if(avions[k].codi<avions[min].codi)
+					min=k;
+			}
+		}else if(opcio==2){					//Model
+			for(int k=i+1;k<N;k++){
+				if(avions[k].model<avions[min].model)
+					min=k;
+			}
+		}
+		if(min>i){
+			igualar_taula(avions,N+1,min); //S'agafa la posició N+1 com a auxiliar per no crear una altra taula
+			igualar_taula(avions,min,i);
+			igualar_taula(avions,i,N+1);
+		}
+	}
+}
+void cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòmica
+	int centre, inf=0, sup=N-1;
+	while(inf<=sup){
+		centre=(sup+inf)/2;
+		if(opcio==1){
+			if(avions[centre].codi==str){
+				inf=centre;
+				sup=centre;
+				for(int a=inf; avions[centre].codi==avions[a].codi; a--)   //Delimita el marge en que es compleix
+					inf=a;
+				for(int a=inf; avions[centre].codi==avions[a].codi; a++)
+					sup=a;
+				escriure_avions(avions,sup,inf);
+			}
+		}
+	}
+}
+void eliminar_element(tAvio avions[], int & N, int c){  //c = posició de l'element a eliminar
 	cout<<N;
 	for(int i=c-1; i<N; i++){
 		igualar_taula(avions,i,i+1);
@@ -217,6 +256,8 @@ int main(){
 	}
 		
 	int opc,opc2,pos;  //opc s'utilitza en el menu principal, opc2 en el secundari, pos es auxiliar
+	int ebuscar;
+    string sbuscar;
 	
 	while (opc!=5){
         cout << "MENU D'OPCIONS:" << endl;
@@ -269,13 +310,17 @@ int main(){
                 obtenir_enter_rang(opc2,1,4);
                 switch(opc2){
 					case 1:
+						cout<<"Introdueix el codi a buscar: ";
+						cin>>sbuscar;
+						ordenar(avions,N,1);
+						cerca(avions,N,1,0,sbuscar);
 						break;
 					case 2:
 						break;
 					case 3:
 						break;
 					case 4:
-						escriure_avions(avions,N);
+						escriure_avions(avions,N,0);
 						cout<<"Introduir posicio de l'avio a eliminar: ";
 						cin>>pos;
 						eliminar_element(avions,N,pos);
@@ -286,7 +331,7 @@ int main(){
                 
             case 4:
                 //programa, accions, funcions	Mostrar Estadístiques
-                escriure_avions(avions,N);
+                escriure_avions(avions,N,0);
                 
                 break;
                 
