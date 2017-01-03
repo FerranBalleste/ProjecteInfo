@@ -276,7 +276,7 @@ void guardar(tAvio avions[], int N, ofstream & dades){
 		
 	}
 }
-void modificar_avio (tAvio avions[],int i){
+void modificar_avio(tAvio avions[],int i){
     
     int opc3;
     string str;
@@ -308,7 +308,7 @@ void modificar_avio (tAvio avions[],int i){
                 avions[i].codi=str;
                 break;
             case 3:
-                cout << "Revisio: (1-Transitoria, 2-Diària)" << endl;
+                cout << "Revisio: (1-Transitoria, 2-Diaria)" << endl;
                 obtenir_enter_rang(enter, 1, 2);
                 avions[i].revisio=enter;
                 break;
@@ -407,6 +407,17 @@ int main(){
                 obtenir_enter_rang(opc2,1,4);
                 switch(opc2){
 					case 1:
+						cout<<"Introdueix el codi a buscar: "<<endl;
+						cin.ignore();
+						getline(cin,sbuscar);
+						ordenar(avions,N,1);
+						pos=cerca(avions,N,1,0,sbuscar);
+						if(pos==-1){
+							cout<<"No s'ha trobat l'avio"<<endl<<endl;
+						}else{
+							escriure_avions(avions,pos+1,pos);
+							modificar_avio(avions,pos);
+						}
 						break;
 					case 2:
 						break;
