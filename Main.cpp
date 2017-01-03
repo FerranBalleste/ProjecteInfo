@@ -282,7 +282,7 @@ void modificar_avio(tAvio avions[],int i){
     string str;
     int enter;
     
-    while (opc3!=9){
+    while (opc3!=10){
         
         cout<< "Escull el criteri a modificar:" << endl;
         cout <<" 1.Codi " << endl; cout <<" 2.Model " << endl;
@@ -290,6 +290,7 @@ void modificar_avio(tAvio avions[],int i){
         cout <<" 5.Data " << endl; cout <<" 6.Hora de servei " << endl;
         cout <<" 7.Acabat " << endl; cout <<" 8.Preu " << endl;
         cout <<" 9.Nom Tecnic " << endl;
+	cout << "10.Sortir" << endl;
         
         cin >> opc3;
         cout << endl;
@@ -354,6 +355,11 @@ void modificar_avio(tAvio avions[],int i){
                 cin >> str;
                 avions[i].tecnic=str;
                 break;
+			
+	    case 10:
+		cout << "Has triat SORTIR" \n;
+		break;
+		default:;	
         }
     }
         
