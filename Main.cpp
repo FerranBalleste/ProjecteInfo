@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <time.h>
 using namespace std;
 const int DIM=50;
 
@@ -26,6 +27,18 @@ struct tAvio{
 	string tecnic;
 };
 
+void temps(struct tm *info,	int&dia,	int&	mes,int&any,int&hora,int&minuts,int&segons){
+	time_t t;
+	time(&t);		
+	info = localtime(&t);
+			
+	dia	= info -> tm_mday;
+	mes = info -> tm_mon+1;  //es suma +1 per a fer-ho de 1-12 enlloc de 0-11
+	any	= 1900 + info -> tm_year;	//	l'any	es	comença	a	comptar	a	partir	del	1900
+	hora = info	-> tm_hour;
+	minuts = info -> tm_min;
+	segons = info -> tm_sec;
+}
 bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 	string linia;
 	if(dades.is_open()){		
@@ -108,11 +121,15 @@ void obtenir_enter_rang(int & input, int min, int max){
 	}
 }
 void crear_avions(tAvio avions[],int & N){
-	cout<<"Quants avions vols crear?";
 	string str;  	//string auxiliar per no escriure directament
 	int enter;		//enter auxiliar per no escriure directament i poder comprovar si es correcte
+	struct tm *info_temps;
+	int dia,mes,any,hora,minuts,segons;
+	
+	cout<<"Quants avions vols crear?";
 	int k;
 	cin>>k;
+	
 	for(int i=N;i<N+k;i++){
 			cout<<"Avio: "<<i+1<<endl;
 			cout<<"Codi: ";
@@ -128,13 +145,11 @@ void crear_avions(tAvio avions[],int & N){
 			cout<<"Estat: (1-Pendent, 2-Realitzat, 3-Baixa)		";
 				obtenir_enter_rang(enter,1,3);
 				avions[i].estat=enter;
-			cout<<"Data: (Dia/Mes/Any)		";
-				obtenir_enter_rang(enter,1,31);
-				avions[i].d.dia=enter;
-				obtenir_enter_rang(enter,1,12);
-				avions[i].d.mes=enter;
-				obtenir_enter_rang(enter,2000,2200);
-				avions[i].d.any=enter;
+			//Dia,mes i any amb llibreria time.h
+				temps(info_temps,dia,mes,any,hora,minuts,segons);
+				avions[i].d.dia=dia;
+				avions[i].d.mes=mes;
+				avions[i].d.any=any;
 			cout<<"Hora de Servei: (HMS) 		";
 				obtenir_enter_rang(enter,0,23);
 				avions[i].servei.h=enter;
