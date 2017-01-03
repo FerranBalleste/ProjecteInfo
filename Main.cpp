@@ -218,7 +218,7 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòmi
 	while(inf<=sup){
 		centre=(sup+inf)/2;
 		if(opcio==1){
-			if(avions[centre].codi==str){
+			if(avions[centre].codi==str){   //cerca codi
 				escriure_avions(avions,centre,centre);
 				cout<<"S'ha trobat l'avio:"<<endl<<endl;
 				return centre;
@@ -227,6 +227,16 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòmi
 		    }else {
 		       inf=centre+1;
 		     }
+		}else if(opcio==2){
+			if(avions[centre].model==str){	//cerca model
+				escriure_avions(avions,centre,centre);
+				cout<<"S'ha trobat l'avio:"<<endl<<endl;
+				return centre;
+			}else if(str < avions[centre].model ){
+		    	sup=centre-1;
+		    }else {
+		       inf=centre+1;
+		    }
 		}
 	}
 	return -1;
@@ -354,7 +364,7 @@ int main(){
 						cin.ignore();
 						getline(cin,sbuscar);
 						ordenar(avions,N,1);
-						pos=cerca(avions,N,1,0,sbuscar);
+						pos=cerca(avions,N,2,0,sbuscar);
 						if(pos==-1){
 							cout<<"No s'ha trobat l'avio"<<endl<<endl;
 						}else{
