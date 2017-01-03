@@ -276,7 +276,88 @@ void guardar(tAvio avions[], int N, ofstream & dades){
 		
 	}
 }
-
+void modificar_avio (tAvio avions[],int i){
+    
+    int opc3;
+    string str;
+    int enter;
+    
+    while (opc3!=9){
+        
+        cout<< "Escull el criteri a modificar:" << endl;
+        cout <<" 1.Codi " << endl; cout <<" 2.Model " << endl;
+        cout <<" 3.Revisio " << endl; cout <<" 4.Estat " << endl;
+        cout <<" 5.Data " << endl; cout <<" 6.Hora de servei " << endl;
+        cout <<" 7.Acabat " << endl; cout <<" 8.Preu " << endl;
+        cout <<" 9.Nom Tecnic " << endl;
+        
+        cin >> opc3;
+        cout << endl;
+        
+        switch(opc3){
+                
+            case 1:
+                cout << "Codi: " << endl;
+                cin >> str;
+                avions[i].codi=str;
+                break;
+                
+            case 2:
+                cout << "Model: " << endl;
+                cin >> str;
+                avions[i].codi=str;
+                break;
+            case 3:
+                cout << "Revisio: (1-Transitoria, 2-Diària)" << endl;
+                obtenir_enter_rang(enter, 1, 2);
+                avions[i].revisio=enter;
+                break;
+            case 4:
+                cout << "Estat: " << endl;
+                obtenir_enter_rang(enter, 1, 3);
+                avions[i].estat=enter;
+                break;
+            case 5:
+                cout << "Data:";
+                obtenir_enter_rang(enter, 1, 31);
+                avions[i].d.dia=enter;
+                obtenir_enter_rang(enter, 1, 12);
+                avions[i].d.mes;
+                obtenir_enter_rang(enter, 2000, 2200);
+                avions[i].d.any;
+                break;
+            case 6:
+                cout << "Hora de Servei (hms): ";
+                obtenir_enter_rang(enter, 0, 23);
+                avions[i].servei.h=enter;
+                obtenir_enter_rang(enter, 0, 59);
+                avions[i].servei.m=enter;
+                obtenir_enter_rang(enter, 0, 59);
+                avions[i].servei.s=enter;
+                break;
+            case 7:
+                cout << "Acabat (hms): ";
+                obtenir_enter_rang(enter, 0, 23);
+                avions[i].acabat.h=enter;
+                obtenir_enter_rang(enter, 0, 59);
+                avions[i].acabat.m=enter;
+                obtenir_enter_rang(enter, 0, 59);
+                avions[i].acabat.s=enter;
+                break;
+            case 8:
+                cout << "Preu: ";
+                obtenir_enter(enter);
+                avions[i].preu=enter;
+                break;
+            case 9:
+                cout << "Nom Tècnic";
+                cin >> str;
+                avions[i].tecnic=str;
+                break;
+        }
+    }
+        
+}
 int main(){
 	tAvio avions[DIM];
 	int N;
