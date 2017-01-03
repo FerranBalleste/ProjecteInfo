@@ -322,9 +322,9 @@ void modificar_avio(tAvio avions[],int i){
                 obtenir_enter_rang(enter, 1, 31);
                 avions[i].d.dia=enter;
                 obtenir_enter_rang(enter, 1, 12);
-                avions[i].d.mes;
+                avions[i].d.mes=enter;
                 obtenir_enter_rang(enter, 2000, 2200);
-                avions[i].d.any;
+                avions[i].d.any=enter;
                 break;
             case 6:
                 cout << "Hora de Servei (hms): ";
