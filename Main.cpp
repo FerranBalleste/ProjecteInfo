@@ -25,6 +25,7 @@ struct tAvio{
 	int preu;
 	string tecnic;
 };
+
 bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 	string linia;
 	if(dades.is_open()){		
@@ -115,10 +116,11 @@ void crear_avions(tAvio avions[],int & N){
 	for(int i=N;i<N+k;i++){
 			cout<<"Avio: "<<i+1<<endl;
 			cout<<"Codi: ";
-				cin>>str;
+				cin.ignore();
+				getline(cin,str);
 				avions[i].codi=str;
 			cout<<"Model: ";
-				cin>>str;
+				getline(cin,str);
 				avions[i].model=str;
 			cout<<"Revisio: (1-Transitòria, 2-Diària)	";		
 				obtenir_enter_rang(enter,1,2);
@@ -130,9 +132,9 @@ void crear_avions(tAvio avions[],int & N){
 				obtenir_enter_rang(enter,1,31);
 				avions[i].d.dia=enter;
 				obtenir_enter_rang(enter,1,12);
-				avions[i].d.mes;
+				avions[i].d.mes=enter;
 				obtenir_enter_rang(enter,2000,2200);
-				avions[i].d.any;
+				avions[i].d.any=enter;
 			cout<<"Hora de Servei: (HMS) 		";
 				obtenir_enter_rang(enter,0,23);
 				avions[i].servei.h=enter;
@@ -151,7 +153,8 @@ void crear_avions(tAvio avions[],int & N){
 				obtenir_enter(enter);
 				avions[i].preu=enter;
 			cout<<"Nom Tecnic:"; 
-				cin>>str; 
+				cin.ignore();
+				getline(cin,str);
 				avions[i].tecnic=str;
 			}
 	N=N+k;
@@ -202,6 +205,7 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòmi
 		if(opcio==1){
 			if(avions[centre].codi==str){
 				escriure_avions(avions,centre,centre);
+				cout<<"S'ha trobat l'avio:"<<endl<<endl;
 				return centre;
 			}else if(str < avions[centre].codi ){
 		    	sup=centre-1;
@@ -210,13 +214,22 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòmi
 		     }
 		}
 	}
+	return -1;
 }
 void eliminar_element(tAvio avions[], int & N, int c){  //c = posició de l'element a eliminar
-	cout<<N;
-	for(int i=c-1; i<N; i++){
-		igualar_taula(avions,i,i+1);
+	cout<<"Segur que el vols eliminar? (Y/N)"<<endl;
+	char opcio;
+    cin>>opcio;
+    if(opcio=='Y' || opcio=='y'){
+    	for(int i=c-1; i<N; i++){
+			igualar_taula(avions,i,i+1);
+		}
+		N=N-1;
+		cout<<"Avio eliminat, per guardar surti del programa a partir del menu principal"<<endl<<endl;
 	}
-	N=N-1;
+	else{
+       	cout<<"No s'ha eliminat"<<endl<<endl;
+    }
 }
 void guardar(tAvio avions[], int N, ofstream & dades){
 	for(int i=0; i<N; i++){
@@ -309,12 +322,30 @@ int main(){
                 obtenir_enter_rang(opc2,1,4);
                 switch(opc2){
 					case 1:
-						cout<<"Introdueix el codi a buscar: ";
-						cin>>sbuscar;
+						cout<<"Introdueix el codi a buscar: "<<endl;
+						cin.ignore();
+						getline(cin,sbuscar);
 						ordenar(avions,N,1);
-						cerca(avions,N,1,0,sbuscar);
+						pos=cerca(avions,N,1,0,sbuscar);
+						if(pos==-1){
+							cout<<"No s'ha trobat l'avio"<<endl<<endl;
+						}else{
+							escriure_avions(avions,pos+1,pos);
+							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
+						}
 						break;
 					case 2:
+						cout<<"Introdueix el model a buscar: "<<endl;
+						cin.ignore();
+						getline(cin,sbuscar);
+						ordenar(avions,N,1);
+						pos=cerca(avions,N,1,0,sbuscar);
+						if(pos==-1){
+							cout<<"No s'ha trobat l'avio"<<endl<<endl;
+						}else{
+							escriure_avions(avions,pos+1,pos);
+							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
+						}
 						break;
 					case 3:
 						break;
@@ -335,7 +366,7 @@ int main(){
                 break;
                 
             case 5:
-                cout<<"Estas segur que vols sortir? Y/N"<<endl;
+                cout<<"Estas segur que vols sortir? (Y/N)"<<endl;
                 char sortir;
                 cin>>sortir;
                 if(sortir!='Y' && sortir!='y')
