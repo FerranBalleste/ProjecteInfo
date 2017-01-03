@@ -34,7 +34,7 @@ void temps(struct tm *info,	int&dia,	int&	mes,int&any,int&hora,int&minuts,int&se
 			
 	dia	= info -> tm_mday;
 	mes = info -> tm_mon+1;  //es suma +1 per a fer-ho de 1-12 enlloc de 0-11
-	any	= 1900 + info -> tm_year;	//	l'any	es	comença	a	comptar	a	partir	del	1900
+	any	= 1900 + info -> tm_year;	//	l'any	es	comenÃ§a	a	comptar	a	partir	del	1900
 	hora = info	-> tm_hour;
 	minuts = info -> tm_min;
 	segons = info -> tm_sec;
@@ -139,7 +139,7 @@ void crear_avions(tAvio avions[],int & N){
 			cout<<"Model: ";
 				getline(cin,str);
 				avions[i].model=str;
-			cout<<"Revisio: (1-Transitòria, 2-Diària)	";		
+			cout<<"Revisio: (1-TransitÃ²ria, 2-DiÃ ria)	";		
 				obtenir_enter_rang(enter,1,2);
 				avions[i].revisio=enter;
 			cout<<"Estat: (1-Pendent, 2-Realitzat, 3-Baixa)		";
@@ -192,7 +192,7 @@ void igualar_taula(tAvio avions[],int b , int a){ //a = posicio inicial, b = pos
 	avions[b].tecnic=avions[a].tecnic;
 }
 void ordenar(tAvio avions[],int N, int opcio){    //Ordenacio per Seleccio
-	int min; //Index del valor més petit
+	int min; //Index del valor mÃ©s petit
 	for(int i=0;i<N-1;i++){
 		min=i;
 		if(opcio==1){						//Codi
@@ -207,13 +207,13 @@ void ordenar(tAvio avions[],int N, int opcio){    //Ordenacio per Seleccio
 			}
 		}
 		if(min>i){
-			igualar_taula(avions,N+1,min); //S'agafa la posició N+1 com a auxiliar per no crear una altra taula
+			igualar_taula(avions,N+1,min); //S'agafa la posiciÃ³ N+1 com a auxiliar per no crear una altra taula
 			igualar_taula(avions,min,i);
 			igualar_taula(avions,i,N+1);
 		}
 	}
 }
-int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòmica
+int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotÃ²mica
 	int centre, inf=0, sup=N-1;
 	while(inf<=sup){
 		centre=(sup+inf)/2;
@@ -241,7 +241,7 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòmi
 	}
 	return -1;
 }
-void eliminar_element(tAvio avions[], int & N, int c){  //c = posició de l'element a eliminar
+void eliminar_element(tAvio avions[], int & N, int c){  //c = posiciÃ³ de l'element a eliminar
 	cout<<"Segur que el vols eliminar? (Y/N)"<<endl;
 	char opcio;
     cin>>opcio;
@@ -350,7 +350,7 @@ void modificar_avio(tAvio avions[],int i){
                 avions[i].preu=enter;
                 break;
             case 9:
-                cout << "Nom Tècnic";
+                cout << "Nom TÃ¨cnic";
                 cin >> str;
                 avions[i].tecnic=str;
                 break;
@@ -420,8 +420,20 @@ int main(){
 						}
 						break;
 					case 2:
+						cout<<"Introdueix el model a buscar: "<<endl;
+						cin.ignore();
+						getline(cin,sbuscar);
+						ordenar(avions,N,1);
+						pos=cerca(avions,N,2,0,sbuscar);
+						if(pos==-1){
+							cout<<"No s'ha trobat l'avio"<<endl<<endl;
+						}else{
+							escriure_avions(avions,pos+1,pos);
+							modificar_avio(avions,pos);
+						}
 						break;
 					case 3:
+				
 						break;
 					case 4:
 						break;
@@ -448,7 +460,7 @@ int main(){
 							cout<<"No s'ha trobat l'avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
-							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
+							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posiciÃ³ a partir de 1
 						}
 						break;
 					case 2:
@@ -461,7 +473,7 @@ int main(){
 							cout<<"No s'ha trobat l'avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
-							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
+							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posiciÃ³ a partir de 1
 						}
 						break;
 					case 3:
@@ -477,7 +489,7 @@ int main(){
                 break;
                 
             case 4:
-                //programa, accions, funcions	Mostrar Estadístiques
+                //programa, accions, funcions	Mostrar EstadÃ­stiques
                 escriure_avions(avions,N,0);
                 
                 break;
