@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 using namespace std;
-const int DIM=50;
+const int DIM=40;
 
 struct temps{
 	int h;
@@ -26,15 +26,22 @@ struct tAvio{
 	int preu;
 	string tecnic;
 };
+struct tApi{
+	string mod; //Tipus de modificació
+	string codi;
+	string model;
+	data d;
+	temps registre;
+};
 
-void temps(struct tm *info,	int&dia,	int&	mes,int&any,int&hora,int&minuts,int&segons){
+void temps(struct tm *info,	int&dia,int&mes,int&any,int&hora,int&minuts,int&segons){
 	time_t t;
 	time(&t);		
 	info = localtime(&t);
 			
 	dia	= info -> tm_mday;
 	mes = info -> tm_mon+1;  //es suma +1 per a fer-ho de 1-12 enlloc de 0-11
-	any	= 1900 + info -> tm_year;	//	l'any	es	comenÃ§a	a	comptar	a	partir	del	1900
+	any	= 1900 + info -> tm_year;	//	l'any	es	comenca	a	comptar	a	partir	del	1900
 	hora = info	-> tm_hour;
 	minuts = info -> tm_min;
 	segons = info -> tm_sec;
@@ -70,7 +77,7 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 			avions[i].servei.m=atoi(linia.c_str());	//minuts
 			getline(dades,linia,';');
 			avions[i].servei.s=atoi(linia.c_str());	//segons
-			//Hora Servei
+			//Hora Acabat
 			getline(dades,linia,';');
 			avions[i].acabat.h=atoi(linia.c_str());  //hores
 			getline(dades,linia,';');
@@ -86,6 +93,44 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 			i++;
 		}
 		N=i-1;    //Resta l'error de eof
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+bool llegir_api(tApi api[DIM], int& A, ifstream & ifapi){
+	string linia;
+	if(ifapi.is_open()){		
+		int i=0;
+		while(!ifapi.eof()){	//Llegir fins al final del fitxer, no llegir si no hi ha res
+			//Tipus de canvi/modificació
+			getline(ifapi,linia,';');
+			api[i].mod=linia;
+			//Codi
+			getline(ifapi,linia,';');
+			api[i].codi=linia;
+			//Model
+			getline(ifapi,linia,';');
+			api[i].model=linia;
+			//Data del registre
+			getline(ifapi,linia,';');
+			api[i].d.dia=atoi(linia.c_str());
+			getline(ifapi,linia,';');
+			api[i].d.mes=atoi(linia.c_str());
+			getline(ifapi,linia,';');
+			api[i].d.any=atoi(linia.c_str());
+			//Hora Registre
+			getline(ifapi,linia,';');
+			api[i].registre.h=atoi(linia.c_str());  //hores
+			getline(ifapi,linia,';');
+			api[i].registre.m=atoi(linia.c_str());	//minuts
+			getline(ifapi,linia,';');
+			api[i].registre.s=atoi(linia.c_str());	//segons
+
+			i++;
+		}
+		A=i-1;    //Resta l'error de eof
 		return true;
 	}
 	else{
@@ -351,13 +396,13 @@ void modificar_avio(tAvio avions[],int i){
                 avions[i].preu=enter;
                 break;
             case 9:
-                cout << "Nom TÃ¨cnic";
+                cout << "Nom Tecnic";
                 cin >> str;
                 avions[i].tecnic=str;
                 break;
 			
 	    case 10:
-		cout << "Has triat SORTIR" \n;
+		cout << "Has triat SORTIR";
 		break;
 		default:;	
         }
@@ -366,13 +411,25 @@ void modificar_avio(tAvio avions[],int i){
 }
 int main(){
 	tAvio avions[DIM];
-	int N;
+	tApi api[10*DIM];
+	int N,A;
 	ifstream indades("dades.txt");
-	ofstream ofdades("dades2.txt");
+	ifstream inapi("api.txt");
+	ofstream ofdades("dades.txt");
+	ofstream ofapi("api.txt");
 	
 	//Llegir Fitxer
 	if(llegir_fitxer(avions, N, indades)){
-		cout<<"S'ha obert correctament"<<endl;
+		cout<<"dades.txt s'ha obert correctament"<<endl;
+		cout<<endl;
+	}
+	else{
+		cout<<"No existeix el fitxer dades.txt";
+	}
+	
+	//Llegir Api
+	if(llegir_api(api, A, inapi)){
+		cout<<"api.txt s'ha obert correctament"<<endl;
 		cout<<endl;
 	}
 	else{
