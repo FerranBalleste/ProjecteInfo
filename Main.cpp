@@ -250,6 +250,11 @@ void ordenar(tAvio avions[],int N, int opcio){    //Ordenacio per Seleccio
 				if(avions[k].model<avions[min].model)
 					min=k;
 			}
+		}else if(opcio==3){					//Tecnic
+			for(int k=i+1;k<N;k++){
+				if(avions[k].tecnic<avions[min].tecnic)
+					min=k;
+			}
 		}
 		if(min>i){
 			igualar_taula(avions,N+1,min); //S'agafa la posició N+1 com a auxiliar per no crear una altra taula
@@ -278,6 +283,16 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòm
 				cout<<"S'ha trobat l'avio:"<<endl<<endl;
 				return centre;
 			}else if(str < avions[centre].model ){
+		    	sup=centre-1;
+		    }else {
+		       inf=centre+1;
+		    }
+		}else if(opcio==3){
+			if(avions[centre].tecnic==str){	//cerca tecnic
+				escriure_avions(avions,centre,centre);
+				cout<<"S'ha trobat l'avio:"<<endl<<endl;
+				return centre;
+			}else if(str < avions[centre].tecnic ){
 		    	sup=centre-1;
 		    }else {
 		       inf=centre+1;
@@ -335,7 +350,7 @@ void modificar_avio(tAvio avions[],int i){
         cout <<" 5.Data " << endl; cout <<" 6.Hora de servei " << endl;
         cout <<" 7.Acabat " << endl; cout <<" 8.Preu " << endl;
         cout <<" 9.Nom Tecnic " << endl;
-	cout << "10.Sortir" << endl;
+		cout << "10.Sortir" << endl;
         
         cin >> opc3;
         cout << endl;
@@ -415,7 +430,7 @@ int main(){
 	int N,A;
 	ifstream indades("dades.txt");
 	ifstream inapi("api.txt");
-	ofstream ofdades("dades.txt");
+	ofstream ofdades("dades2.txt");
 	ofstream ofapi("api.txt");
 	
 	//Llegir Fitxer
@@ -465,7 +480,7 @@ int main(){
                 cout<<"Criteri de busca per trobar avio a modificar: "<<endl;
                 cout<<"1.Codi"<<endl;
                 cout<<"2.Model"<<endl;
-                cout<<"3.Preu"<<endl;
+                cout<<"3.Tecnic responsable"<<endl;
                 cout<<"4.Mostrar tots els avions sense ordenar"<<endl;
                 obtenir_enter_rang(opc2,1,4);
                 switch(opc2){
@@ -476,7 +491,7 @@ int main(){
 						ordenar(avions,N,1);
 						pos=cerca(avions,N,1,0,sbuscar);
 						if(pos==-1){
-							cout<<"No s'ha trobat l'avio"<<endl<<endl;
+							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
 							modificar_avio(avions,pos);
@@ -486,19 +501,33 @@ int main(){
 						cout<<"Introdueix el model a buscar: "<<endl;
 						cin.ignore();
 						getline(cin,sbuscar);
-						ordenar(avions,N,1);
+						ordenar(avions,N,2);
 						pos=cerca(avions,N,2,0,sbuscar);
 						if(pos==-1){
-							cout<<"No s'ha trobat l'avio"<<endl<<endl;
+							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
 							modificar_avio(avions,pos);
 						}
 						break;
 					case 3:
-				
+						cout<<"Introdueix el nom del tecnic: "<<endl;
+						cin.ignore();
+						getline(cin,sbuscar);
+						ordenar(avions,N,3);
+						pos=cerca(avions,N,3,0,sbuscar);
+						if(pos==-1){
+							cout<<"No s'ha trobat cap avio"<<endl<<endl;
+						}else{
+							escriure_avions(avions,pos+1,pos);
+							modificar_avio(avions,pos);
+						}
 						break;
 					case 4:
+						escriure_avions(avions,N,0);
+						cout<<"Introduir posicio de l'avio a eliminar: ";
+						cin>>pos;
+						modificar_avio(avions,pos);
 						break;
 					default:;
 				}
@@ -509,7 +538,7 @@ int main(){
                 cout<<"Criteri de busca per trobar avio a eliminar: "<<endl;
                 cout<<"1.Codi"<<endl;
                 cout<<"2.Model"<<endl;
-                cout<<"3.Preu"<<endl;
+               	cout<<"3.Tecnic responsable"<<endl;
                 cout<<"4.Mostrar tots els avions sense ordenar"<<endl;
                 obtenir_enter_rang(opc2,1,4);
                 switch(opc2){
@@ -520,7 +549,7 @@ int main(){
 						ordenar(avions,N,1);
 						pos=cerca(avions,N,1,0,sbuscar);
 						if(pos==-1){
-							cout<<"No s'ha trobat l'avio"<<endl<<endl;
+							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
 							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
@@ -530,21 +559,32 @@ int main(){
 						cout<<"Introdueix el model a buscar: "<<endl;
 						cin.ignore();
 						getline(cin,sbuscar);
-						ordenar(avions,N,1);
+						ordenar(avions,N,2);
 						pos=cerca(avions,N,2,0,sbuscar);
 						if(pos==-1){
-							cout<<"No s'ha trobat l'avio"<<endl<<endl;
+							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
 							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
 						}
 						break;
 					case 3:
+						cout<<"Introdueix el nom del tecnic: "<<endl;
+						cin.ignore();
+						getline(cin,sbuscar);
+						ordenar(avions,N,3);
+						pos=cerca(avions,N,3,0,sbuscar);
+						if(pos==-1){
+							cout<<"No s'ha trobat cap avio"<<endl<<endl;
+						}else{
+							escriure_avions(avions,pos+1,pos);
+							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
+						}
 						break;
 					case 4:
 						escriure_avions(avions,N,0);
 						cout<<"Introduir posicio de l'avio a eliminar: ";
-						cin>>pos;
+						obtenir_enter_rang(pos,1,N);
 						eliminar_element(avions,N,pos);
 						break;
 					default:;
@@ -552,7 +592,7 @@ int main(){
                 break;
                 
             case 4:
-                //programa, accions, funcions	Mostrar Estadístiques
+                //programa, accions, funcions	Mostrar Estadistiques
                 escriure_avions(avions,N,0);
                 
                 break;
