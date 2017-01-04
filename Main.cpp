@@ -190,7 +190,26 @@ void obtenir_enter_rang(int & input, int min, int max){
 		obtenir_enter(input);
 	}
 }
-void crear_avions(tAvio avions[],int & N){
+void afegir_api(tApi api[], tAvio avions[], int & A, int i, string tipus){
+	struct tm *info_temps;
+	int dia,mes,any,hora,minuts,segons;
+	
+	temps(info_temps,dia,mes,any,hora,minuts,segons);
+	
+	api[A].mod=tipus;
+	api[A].codi=avions[i].codi;
+	api[A].model=avions[i].model;
+	api[A].d.dia=dia;
+	api[A].d.mes=mes;
+	api[A].d.any=any;
+	api[A].registre.h=hora;
+	api[A].registre.m=minuts;
+	api[A].registre.s=segons;
+	
+	A++;
+	
+}
+void crear_avions(tAvio avions[], int & N, int & A, tApi api[]){
 	string str;  	//string auxiliar per no escriure directament
 	int enter;		//enter auxiliar per no escriure directament i poder comprovar si es correcte
 	struct tm *info_temps;
@@ -241,27 +260,9 @@ void crear_avions(tAvio avions[],int & N){
 				cin.ignore();
 				getline(cin,str);
 				avions[i].tecnic=str;
+			afegir_api(api,avions,A,i,"S'ha afegit un avio");
 			}
 	N=N+k;
-}
-void afegir_api(tApi api[], tAvio avions[], int & A, int i, string tipus){
-	struct tm *info_temps;
-	int dia,mes,any,hora,minuts,segons;
-	
-	temps(info_temps,dia,mes,any,hora,minuts,segons);
-	
-	api[A].mod=tipus;
-	api[A].codi=avions[i].codi;
-	api[A].model=avions[i].model;
-	api[A].d.dia=dia;
-	api[A].d.mes=mes;
-	api[A].d.any=any;
-	api[A].registre.h=hora;
-	api[A].registre.m=minuts;
-	api[A].registre.s=segons;
-	
-	A++;
-	
 }
 void igualar_taula(tAvio avions[],int b , int a){ //a = posicio inicial, b = posicio final
 	avions[b].codi=avions[a].codi;
@@ -544,7 +545,7 @@ int main(){
                 
             case 1:
                 //programa, accions, funcions	Crear
-                crear_avions(avions,N);
+                crear_avions(avions,N,A,api);
                 break;
                 
             case 2:
