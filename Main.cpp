@@ -93,6 +93,7 @@ bool llegir_fitxer(tAvio avions[DIM], int& N,ifstream & dades){
 			i++;
 		}
 		N=i-1;    //Resta l'error de eof
+		dades.close();
 		return true;
 	}
 	else{
@@ -131,6 +132,7 @@ bool llegir_api(tApi api[DIM], int& A, ifstream & ifapi){
 			i++;
 		}
 		A=i-1;    //Resta l'error de eof
+		ifapi.close();
 		return true;
 	}
 	else{
@@ -338,13 +340,14 @@ void guardar(tAvio avions[], int N, ofstream & dades){
 }
 void modificar_avio(tAvio avions[],int i){
     
+    cout<<i;
     int opc3;
     string str;
     int enter;
     
     while (opc3!=10){
         
-        cout<< "Escull el criteri a modificar:" << endl;
+        cout<<endl<< "Escull el criteri a modificar:" << endl;
         cout <<" 1.Codi " << endl; cout <<" 2.Model " << endl;
         cout <<" 3.Revisio " << endl; cout <<" 4.Estat " << endl;
         cout <<" 5.Data " << endl; cout <<" 6.Hora de servei " << endl;
@@ -417,7 +420,7 @@ void modificar_avio(tAvio avions[],int i){
                 break;
 			
 	    case 10:
-		cout << "Has triat SORTIR";
+		cout << "Has triat SORTIR"<<endl<<endl;
 		break;
 		default:;	
         }
@@ -430,8 +433,6 @@ int main(){
 	int N,A;
 	ifstream indades("dades.txt");
 	ifstream inapi("api.txt");
-	ofstream ofdades("dades2.txt");
-	ofstream ofapi("api.txt");
 	
 	//Llegir Fitxer
 	if(llegir_fitxer(avions, N, indades)){
@@ -450,6 +451,10 @@ int main(){
 	else{
 		cout<<"No existeix el fitxer dades.txt";
 	}
+	
+	ofstream ofdades("dades.txt");
+	ofstream ofapi("api.txt");
+	
 		
 	int opc,opc2,pos;  //opc s'utilitza en el menu principal, opc2 en el secundari, pos es auxiliar
 	int ebuscar;
@@ -525,9 +530,9 @@ int main(){
 						break;
 					case 4:
 						escriure_avions(avions,N,0);
-						cout<<"Introduir posicio de l'avio a eliminar: ";
+						cout<<"Introduir posicio de l'avio a modificar: ";
 						cin>>pos;
-						modificar_avio(avions,pos);
+						modificar_avio(avions,pos-1);
 						break;
 					default:;
 				}
@@ -615,6 +620,6 @@ int main(){
         
     }//fi while
     
-indades.close();
+ofapi.close();
 ofdades.close();
 }
