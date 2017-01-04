@@ -167,12 +167,13 @@ void escriure_avions(tAvio avions[],int N, int inf){      //Mostra el contingut 
 			}
 }
 void escriure_api(tApi api[],int A){
+	cout<<"API:"<<endl;
 	for(int i=0;i<A;i++){
-		cout<<endl<<"Tipus de modificacio: "<<api[i].mod;
+		cout<<endl<<"Tipus de modificacio: "<<api[i].mod<<endl;
 		cout<<"Codi: "<<api[i].codi<<endl;
 		cout<<"Model: "<<api[i].model<<endl;
 		cout<<"Data: "<<api[i].d.dia<<" "<<api[i].d.mes<< " " << api[i].d.any <<endl;
-		cout<<"Hora de Registre: "<<api[i].registre.h<<" "<<api[i].registre.m<<" "<<api[i].registre.s<<endl;
+		cout<<"Hora de Registre: "<<api[i].registre.h<<" "<<api[i].registre.m<<" "<<api[i].registre.s<<endl<<endl;
 	}
 }
 void obtenir_enter(int & input){
@@ -243,7 +244,7 @@ void crear_avions(tAvio avions[],int & N){
 			}
 	N=N+k;
 }
-void omplir_api(tApi api[], tAvio avions[], int & A, int i, string tipus){
+void afegir_api(tApi api[], tAvio avions[], int & A, int i, string tipus){
 	struct tm *info_temps;
 	int dia,mes,any,hora,minuts,segons;
 	
@@ -258,6 +259,8 @@ void omplir_api(tApi api[], tAvio avions[], int & A, int i, string tipus){
 	api[A].registre.h=hora;
 	api[A].registre.m=minuts;
 	api[A].registre.s=segons;
+	
+	A++;
 	
 }
 void igualar_taula(tAvio avions[],int b , int a){ //a = posicio inicial, b = posicio final
@@ -342,7 +345,7 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòm
 	}
 	return -1;
 }
-void modificar_avio(tAvio avions[],int i){
+void modificar_avio(tAvio avions[],int i, int & A, tApi api[]){
     
     int opc3;
     string str;
@@ -367,22 +370,26 @@ void modificar_avio(tAvio avions[],int i){
                 cout << "Codi: " << endl;
                 cin >> str;
                 avions[i].codi=str;
+                afegir_api(api,avions,A,i,"S'ha canviat el codi");
                 break;
                 
             case 2:
                 cout << "Model: " << endl;
                 cin >> str;
                 avions[i].codi=str;
+                afegir_api(api,avions,A,i,"S'ha canviat el model");
                 break;
             case 3:
                 cout << "Revisio: (1-Transitoria, 2-Diaria)" << endl;
                 obtenir_enter_rang(enter, 1, 2);
                 avions[i].revisio=enter;
+                afegir_api(api,avions,A,i,"S'ha canviat el tipus de revisio");
                 break;
             case 4:
                 cout << "Estat: " << endl;
                 obtenir_enter_rang(enter, 1, 3);
                 avions[i].estat=enter;
+                afegir_api(api,avions,A,i,"S'ha canviat l'estat'");
                 break;
             case 5:
                 cout << "Data:";
@@ -392,6 +399,7 @@ void modificar_avio(tAvio avions[],int i){
                 avions[i].d.mes=enter;
                 obtenir_enter_rang(enter, 2000, 2200);
                 avions[i].d.any=enter;
+                afegir_api(api,avions,A,i,"S'ha canviat la data del avio (no la data de la realitzacio del canvi)");
                 break;
             case 6:
                 cout << "Hora de Servei (hms): ";
@@ -401,6 +409,7 @@ void modificar_avio(tAvio avions[],int i){
                 avions[i].servei.m=enter;
                 obtenir_enter_rang(enter, 0, 59);
                 avions[i].servei.s=enter;
+                afegir_api(api,avions,A,i,"S'ha canviat l'hora de servei");
                 break;
             case 7:
                 cout << "Acabat (hms): ";
@@ -410,16 +419,19 @@ void modificar_avio(tAvio avions[],int i){
                 avions[i].acabat.m=enter;
                 obtenir_enter_rang(enter, 0, 59);
                 avions[i].acabat.s=enter;
+                afegir_api(api,avions,A,i,"S'ha canviat l'hora d'acabada'");
                 break;
             case 8:
                 cout << "Preu: ";
                 obtenir_enter(enter);
                 avions[i].preu=enter;
+                afegir_api(api,avions,A,i,"S'ha canviat el preu");
                 break;
             case 9:
                 cout << "Nom Tecnic";
                 cin >> str;
                 avions[i].tecnic=str;
+                afegir_api(api,avions,A,i,"S'ha canviat el nom del tecnic");
                 break;
 			
 	    case 10:
@@ -430,16 +442,17 @@ void modificar_avio(tAvio avions[],int i){
     }
         
 }
-void eliminar_element(tAvio avions[], int & N, int c){  //c = posició de l'element a eliminar
+void eliminar_element(tAvio avions[], int & N, int c, tApi api[], int & A){  //c = posicio de l'element a eliminar
 	cout<<"Segur que el vols eliminar? (Y/N)"<<endl;
 	char opcio;
     cin>>opcio;
     if(opcio=='Y' || opcio=='y'){
+    	afegir_api(api,avions,A,c,"S'ha eliminat l'avio codi"); //S'ha d'afegir abans que s'elimini
     	for(int i=c-1; i<N; i++){
 			igualar_taula(avions,i,i+1);
 		}
 		N=N-1;
-		cout<<"Avio eliminat, per guardar surti del programa a partir del menu principal"<<endl<<endl;
+		cout<<"Avio eliminat"<<endl<<endl;
 	}
 	else{
        	cout<<"No s'ha eliminat"<<endl<<endl;
@@ -462,7 +475,6 @@ void guardar(tAvio avions[], int N, ofstream & dades){
 		dades << avions[i].acabat.s << ';';
 		dades << avions[i].preu << ';';
 		dades << avions[i].tecnic << ';';
-		
 	}
 }
 void guardar_api(tApi tapi[], int A, ofstream & api){
@@ -483,6 +495,7 @@ void tancar_programa(tAvio avions[], int N, tApi api[], int A){ //Si es fica al 
 	ofstream ofdades("dades.txt");   							//per no perdre'l en cas de no guardar-se s'ha fet aquesta funcio 
 	ofstream ofapi("api.txt");	
     guardar(avions, N, ofdades);
+    guardar_api(api, A, ofapi);
     cout<<"S'ha guardat correctament";
     ofapi.close();
 	ofdades.close();
@@ -521,7 +534,7 @@ int main(){
         cout << " 1. Crear " << endl;
         cout << " 2. Modificar " << endl;
         cout << " 3. Eliminar " << endl;
-        cout << " 4. Mostrar estadistiques " << endl;
+        cout << " 4. Mostrar..." << endl;
         cout << " 5. Guardar i Sortir del programa " << endl;  
         cout << "SELECCIONEU UNA OPCIO: " << endl;
         cin >> opc;
@@ -553,7 +566,7 @@ int main(){
 							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
-							modificar_avio(avions,pos);
+							modificar_avio(avions,pos,A,api);
 						}
 						break;
 					case 2:
@@ -566,7 +579,7 @@ int main(){
 							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
-							modificar_avio(avions,pos);
+							modificar_avio(avions,pos,A,api);
 						}
 						break;
 					case 3:
@@ -579,14 +592,14 @@ int main(){
 							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
-							modificar_avio(avions,pos);
+							modificar_avio(avions,pos,A,api);
 						}
 						break;
 					case 4:
 						escriure_avions(avions,N,0);
 						cout<<"Introduir posicio de l'avio a modificar: ";
 						cin>>pos;
-						modificar_avio(avions,pos-1);
+						modificar_avio(avions,pos-1,A,api);
 						break;
 					default:;
 				}
@@ -611,7 +624,7 @@ int main(){
 							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
-							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
+							eliminar_element(avions,N,pos+1,api,A);  //la funcio eliminar conta la posició a partir de 1
 						}
 						break;
 					case 2:
@@ -624,7 +637,7 @@ int main(){
 							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
-							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
+							eliminar_element(avions,N,pos+1,api,A);  //la funcio eliminar conta la posició a partir de 1
 						}
 						break;
 					case 3:
@@ -637,14 +650,14 @@ int main(){
 							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
 							escriure_avions(avions,pos+1,pos);
-							eliminar_element(avions,N,pos+1);  //la funcio eliminar conta la posició a partir de 1
+							eliminar_element(avions,N,pos+1,api,A);  //la funcio eliminar conta la posició a partir de 1
 						}
 						break;
 					case 4:
 						escriure_avions(avions,N,0);
 						cout<<"Introduir posicio de l'avio a eliminar: ";
 						obtenir_enter_rang(pos,1,N);
-						eliminar_element(avions,N,pos);
+						eliminar_element(avions,N,pos,api,A);
 						break;
 					default:;
 				}
@@ -652,9 +665,20 @@ int main(){
                 
             case 4:
                 //programa, accions, funcions	Mostrar Estadistiques
-                escriure_avions(avions,N,0);
-                escriure_api(api,A);
                 
+                cout<<"1.Llista completa dels avions"<<endl;
+                cout<<"2.API"<<endl<<endl;
+                obtenir_enter_rang(opc2,1,2);
+				switch(opc2){
+					case 1:
+						cout<<"Avions:"<<endl<<endl;
+						escriure_avions(avions,N,0);
+						break;
+					case 2:
+	                	escriure_api(api,A);
+	                	break;
+                	default:;
+            	}
                 break;
                 
             case 5:
