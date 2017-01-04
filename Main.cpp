@@ -166,6 +166,15 @@ void escriure_avions(tAvio avions[],int N, int inf){      //Mostra el contingut 
 			cout<<"Nom Tecnic: "<<avions[i].tecnic<<endl<<endl;
 			}
 }
+void escriure_api(tApi api[],int A){
+	for(int i=0;i<A;i++){
+		cout<<endl<<"Tipus de modificacio: "<<api[i].mod;
+		cout<<"Codi: "<<api[i].codi<<endl;
+		cout<<"Model: "<<api[i].model<<endl;
+		cout<<"Data: "<<api[i].d.dia<<" "<<api[i].d.mes<< " " << api[i].d.any <<endl;
+		cout<<"Hora de Registre: "<<api[i].registre.h<<" "<<api[i].registre.m<<" "<<api[i].registre.s<<endl;
+	}
+}
 void obtenir_enter(int & input){
 	while (!(cin >> input)) {
 	    cin.clear();
@@ -233,6 +242,23 @@ void crear_avions(tAvio avions[],int & N){
 				avions[i].tecnic=str;
 			}
 	N=N+k;
+}
+void omplir_api(tApi api[], tAvio avions[], int & A, int i, string tipus){
+	struct tm *info_temps;
+	int dia,mes,any,hora,minuts,segons;
+	
+	temps(info_temps,dia,mes,any,hora,minuts,segons);
+	
+	api[A].mod=tipus;
+	api[A].codi=avions[i].codi;
+	api[A].model=avions[i].model;
+	api[A].d.dia=dia;
+	api[A].d.mes=mes;
+	api[A].d.any=any;
+	api[A].registre.h=hora;
+	api[A].registre.m=minuts;
+	api[A].registre.s=segons;
+	
 }
 void igualar_taula(tAvio avions[],int b , int a){ //a = posicio inicial, b = posicio final
 	avions[b].codi=avions[a].codi;
@@ -353,7 +379,6 @@ void guardar(tAvio avions[], int N, ofstream & dades){
 }
 void modificar_avio(tAvio avions[],int i){
     
-    cout<<i;
     int opc3;
     string str;
     int enter;
@@ -440,6 +465,14 @@ void modificar_avio(tAvio avions[],int i){
     }
         
 }
+void tancar_programa(tAvio avions[], int N, tApi api[], int A){ //Si es fica al inici del main, s'esborra el contingut dels fitxers, 
+	ofstream ofdades("dades.txt");   							//per no perdre'l en cas de no guardar-se s'ha fet aquesta funcio 
+	ofstream ofapi("api.txt");	
+    guardar(avions, N, ofdades);
+    cout<<"S'ha guardat correctament";
+    ofapi.close();
+	ofdades.close();
+}
 int main(){
 	tAvio avions[DIM];
 	tApi api[10*DIM];
@@ -464,10 +497,6 @@ int main(){
 	else{
 		cout<<"No existeix el fitxer dades.txt";
 	}
-	
-	ofstream ofdades("dades.txt");
-	ofstream ofapi("api.txt");
-	
 		
 	int opc,opc2,pos;  //opc s'utilitza en el menu principal, opc2 en el secundari, pos es auxiliar
 	int ebuscar;
@@ -479,7 +508,7 @@ int main(){
         cout << " 2. Modificar " << endl;
         cout << " 3. Eliminar " << endl;
         cout << " 4. Mostrar estadistiques " << endl;
-        cout << " 5. Sortir del programa " << endl;  
+        cout << " 5. Guardar i Sortir del programa " << endl;  
         cout << "SELECCIONEU UNA OPCIO: " << endl;
         cin >> opc;
         cout<<endl;
@@ -610,6 +639,7 @@ int main(){
             case 4:
                 //programa, accions, funcions	Mostrar Estadistiques
                 escriure_avions(avions,N,0);
+                escriure_api(api,A);
                 
                 break;
                 
@@ -620,17 +650,12 @@ int main(){
                 if(sortir!='Y' && sortir!='y')
                 	opc=0;
                 else{
-               		guardar(avions, N, ofdades);
-               		cout<<"S'ha guardat correctament";
+                	tancar_programa(avions,N,api,A);
             	}
 				break;
             default:;
         }// fi switch
         
-        
-        
     }//fi while
-    
-ofapi.close();
-ofdades.close();
+
 }
