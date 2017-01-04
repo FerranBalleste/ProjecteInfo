@@ -139,13 +139,26 @@ bool llegir_api(tApi api[DIM], int& A, ifstream & ifapi){
 		return false;
 	}
 }
-void escriure_avions(tAvio avions[],int N, int inf){      //Mostra el contingut de la taula d'avions per pantalla
+void escriure_avions(tAvio avions[],int N, int inf){      //Mostra el contingut de la taula d'avions per pantalla, de inf a N
+	int a;
 	for(int i=inf;i<N;i++){
 			cout<<"Avio: "<<i+1<<endl;
 			cout<<"Codi: "<<avions[i].codi<<endl;
 			cout<<"Model: "<<avions[i].model<<endl;
-			cout<<"Revisio: "<<avions[i].revisio<<endl;
-			cout<<"Estat: "<<avions[i].estat<<endl;
+			cout<<"Revisio: ";
+			a=avions[i].revisio;
+			if(a==1)
+				cout<<"Transitoria"<<endl;
+			else
+				cout<<"Diaria"<<endl;
+			cout<<"Estat: ";
+			a=avions[i].estat;
+			if(a==1)
+				cout<<"Pendent"<<endl;
+			else if(a==2)
+				cout<<"Realitzada"<<endl;
+			else
+				cout<<"Baixa"<<endl;
 			cout<<"Data: "<<avions[i].d.dia<<" "<<avions[i].d.mes<< " " << avions[i].d.any <<endl;
 			cout<<"Hora de Servei: "<<avions[i].servei.h<<" "<<avions[i].servei.m<<" "<<avions[i].servei.s<<endl;
 			cout<<"Acabat: "<<avions[i].acabat.h<<" "<<avions[i].acabat.m<<" "<<avions[i].acabat.s<<endl;
@@ -186,7 +199,7 @@ void crear_avions(tAvio avions[],int & N){
 			cout<<"Model: ";
 				getline(cin,str);
 				avions[i].model=str;
-			cout<<"Revisio: (1-Transitòria, 2-Diària)	";		
+			cout<<"Revisio: (1-Transitoria, 2-Diaria)	";		
 				obtenir_enter_rang(enter,1,2);
 				avions[i].revisio=enter;
 			cout<<"Estat: (1-Pendent, 2-Realitzat, 3-Baixa)		";
@@ -476,8 +489,6 @@ int main(){
             case 1:
                 //programa, accions, funcions	Crear
                 crear_avions(avions,N);
-                
-                
                 break;
                 
             case 2:
