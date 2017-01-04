@@ -342,41 +342,6 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòm
 	}
 	return -1;
 }
-void eliminar_element(tAvio avions[], int & N, int c){  //c = posició de l'element a eliminar
-	cout<<"Segur que el vols eliminar? (Y/N)"<<endl;
-	char opcio;
-    cin>>opcio;
-    if(opcio=='Y' || opcio=='y'){
-    	for(int i=c-1; i<N; i++){
-			igualar_taula(avions,i,i+1);
-		}
-		N=N-1;
-		cout<<"Avio eliminat, per guardar surti del programa a partir del menu principal"<<endl<<endl;
-	}
-	else{
-       	cout<<"No s'ha eliminat"<<endl<<endl;
-    }
-}
-void guardar(tAvio avions[], int N, ofstream & dades){
-	for(int i=0; i<N; i++){
-		dades << avions[i].codi << ';';
-		dades << avions[i].model << ';';
-		dades << avions[i].revisio << ';';
-		dades << avions[i].estat << ';';
-		dades << avions[i].d.dia << ';';
-		dades << avions[i].d.mes << ';';
-		dades << avions[i].d.any << ';';
-		dades << avions[i].servei.h << ';';
-		dades << avions[i].servei.m << ';';
-		dades << avions[i].servei.s << ';';
-		dades << avions[i].acabat.h << ';';
-		dades << avions[i].acabat.m << ';';
-		dades << avions[i].acabat.s << ';';
-		dades << avions[i].preu << ';';
-		dades << avions[i].tecnic << ';';
-		
-	}
-}
 void modificar_avio(tAvio avions[],int i){
     
     int opc3;
@@ -464,6 +429,55 @@ void modificar_avio(tAvio avions[],int i){
         }
     }
         
+}
+void eliminar_element(tAvio avions[], int & N, int c){  //c = posició de l'element a eliminar
+	cout<<"Segur que el vols eliminar? (Y/N)"<<endl;
+	char opcio;
+    cin>>opcio;
+    if(opcio=='Y' || opcio=='y'){
+    	for(int i=c-1; i<N; i++){
+			igualar_taula(avions,i,i+1);
+		}
+		N=N-1;
+		cout<<"Avio eliminat, per guardar surti del programa a partir del menu principal"<<endl<<endl;
+	}
+	else{
+       	cout<<"No s'ha eliminat"<<endl<<endl;
+    }
+}
+void guardar(tAvio avions[], int N, ofstream & dades){
+	for(int i=0; i<N; i++){
+		dades << avions[i].codi << ';';
+		dades << avions[i].model << ';';
+		dades << avions[i].revisio << ';';
+		dades << avions[i].estat << ';';
+		dades << avions[i].d.dia << ';';
+		dades << avions[i].d.mes << ';';
+		dades << avions[i].d.any << ';';
+		dades << avions[i].servei.h << ';';
+		dades << avions[i].servei.m << ';';
+		dades << avions[i].servei.s << ';';
+		dades << avions[i].acabat.h << ';';
+		dades << avions[i].acabat.m << ';';
+		dades << avions[i].acabat.s << ';';
+		dades << avions[i].preu << ';';
+		dades << avions[i].tecnic << ';';
+		
+	}
+}
+void guardar_api(tApi tapi[], int A, ofstream & api){
+	for(int i=0; i<A; i++){
+		api << tapi[i].mod << ';';
+		api << tapi[i].codi << ';';
+		api << tapi[i].model << ';';
+		api << tapi[i].codi << ';';
+		api << tapi[i].d.dia << ';';
+		api << tapi[i].d.mes << ';';
+		api << tapi[i].d.any << ';';
+		api << tapi[i].registre.h << ';';
+		api << tapi[i].registre.m << ';';
+		api << tapi[i].registre.s << ';';
+	}
 }
 void tancar_programa(tAvio avions[], int N, tApi api[], int A){ //Si es fica al inici del main, s'esborra el contingut dels fitxers, 
 	ofstream ofdades("dades.txt");   							//per no perdre'l en cas de no guardar-se s'ha fet aquesta funcio 
