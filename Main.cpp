@@ -314,8 +314,9 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòm
 		centre=(sup+inf)/2;
 		if(opcio==1){
 			if(avions[centre].codi==str){   //cerca codi
-				escriure_avions(avions,centre,centre);
 				cout<<"S'ha trobat l'avio:"<<endl<<endl;
+				escriure_avions(avions,centre,centre);
+				//Com que el codi es unic (en teoria) no necesita mostrar totes les opcions
 				return centre;
 			}else if(str < avions[centre].codi ){
 		    	sup=centre-1;
@@ -324,8 +325,17 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòm
 		     }
 		}else if(opcio==2){
 			if(avions[centre].model==str){	//cerca model
-				escriure_avions(avions,centre,centre);
-				cout<<"S'ha trobat l'avio:"<<endl<<endl;
+				inf=centre; sup=centre;
+				//Trobar l'avio del mateix model amb la posici� inferior
+				while(avions[inf].model==avions[centre].model && inf>=0)
+					inf--;
+				while(avions[sup].model==avions[centre].model && sup<=0)
+					sup++;
+				inf++; sup++; //Per obtenir la posicio
+				cout<<"Resultat de la cerca:"<<endl<<endl;
+				escriure_avions(avions,sup+1,inf);
+				cout<<endl<<"Introdueix el index de l'avio a eliminar (1,2,3...) :"<<endl;
+				obtenir_enter_rang(centre,inf+1,sup+1);
 				return centre;
 			}else if(str < avions[centre].model ){
 		    	sup=centre-1;
@@ -334,8 +344,19 @@ int cerca(tAvio avions[],int N,int opcio,int enter,string str){	//Cerca dicotòm
 		    }
 		}else if(opcio==3){
 			if(avions[centre].tecnic==str){	//cerca tecnic
-				escriure_avions(avions,centre,centre);
-				cout<<"S'ha trobat l'avio:"<<endl<<endl;
+				inf=centre; sup=centre;
+				//Trobar l'avio del mateix tecnic amb la posici� inferior
+				while(avions[inf].tecnic==avions[centre].model && inf>=0)
+					inf--;
+				inf++;
+				//Trobar l'avio del mateix tecnic amb la posici� superior
+				while(avions[sup].model==avions[centre].model && sup<=0)
+					sup++;
+				sup++;
+				cout<<"Resultat de la cerca:"<<endl<<endl;
+				escriure_avions(avions,sup+1,inf);
+				cout<<endl<<"Introdueix el index de l'avio a eliminar (1,2,3...) :"<<endl;
+				obtenir_enter_rang(centre,inf+1,sup+1);
 				return centre;
 			}else if(str < avions[centre].tecnic ){
 		    	sup=centre-1;
@@ -483,7 +504,6 @@ void guardar_api(tApi tapi[], int A, ofstream & api){
 		api << tapi[i].mod << ';';
 		api << tapi[i].codi << ';';
 		api << tapi[i].model << ';';
-		api << tapi[i].codi << ';';
 		api << tapi[i].d.dia << ';';
 		api << tapi[i].d.mes << ';';
 		api << tapi[i].d.any << ';';
@@ -624,8 +644,7 @@ int main(){
 						if(pos==-1){
 							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
-							escriure_avions(avions,pos+1,pos);
-							eliminar_element(avions,N,pos+1,api,A);  //la funcio eliminar conta la posició a partir de 1
+							eliminar_element(avions,N,pos+1,api,A);  //la funcio eliminar conta la posicio a partir de 1
 						}
 						break;
 					case 2:
@@ -637,8 +656,7 @@ int main(){
 						if(pos==-1){
 							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
-							escriure_avions(avions,pos+1,pos);
-							eliminar_element(avions,N,pos+1,api,A);  //la funcio eliminar conta la posició a partir de 1
+							eliminar_element(avions,N,pos+1,api,A);  //la funcio eliminar conta la posicio a partir de 1
 						}
 						break;
 					case 3:
@@ -650,8 +668,7 @@ int main(){
 						if(pos==-1){
 							cout<<"No s'ha trobat cap avio"<<endl<<endl;
 						}else{
-							escriure_avions(avions,pos+1,pos);
-							eliminar_element(avions,N,pos+1,api,A);  //la funcio eliminar conta la posició a partir de 1
+							eliminar_element(avions,N,pos+1,api,A);  //la funcio eliminar conta la posicio a partir de 1
 						}
 						break;
 					case 4:
