@@ -215,9 +215,10 @@ void crear_avions(tAvio avions[], int & N, int & A, tApi api[]){
 	struct tm *info_temps;
 	int dia,mes,any,hora,minuts,segons;
 	
-	cout<<"Quants avions vols crear?";
+	cout<<"Quants avions vols crear?"<<endl;
 	int k;
 	cin>>k;
+	cout<<endl;
 	
 	for(int i=N;i<N+k;i++){
 			cout<<"Avio: "<<i+1<<endl;
@@ -256,7 +257,7 @@ void crear_avions(tAvio avions[], int & N, int & A, tApi api[]){
 			cout<<"Preu: ";
 				obtenir_enter(enter);
 				avions[i].preu=enter;
-			cout<<"Nom Tecnic:"; 
+			cout<<"Nom Tecnic:"<<endl; 
 				cin.ignore();
 				getline(cin,str);
 				avions[i].tecnic=str;
@@ -469,7 +470,7 @@ void eliminar_element(tAvio avions[], int & N, int c, tApi api[], int & A){  //c
 	char opcio;
     cin>>opcio;
     if(opcio=='Y' || opcio=='y'){
-    	afegir_api(api,avions,A,c,"S'ha eliminat l'avio codi"); //S'ha d'afegir abans que s'elimini
+    	afegir_api(api,avions,A,c-1,"S'ha eliminat l'avio"); //S'ha d'afegir abans que s'elimini
     	for(int i=c-1; i<N; i++){
 			igualar_taula(avions,i,i+1);
 		}
@@ -575,7 +576,9 @@ int main(){
                 cout<<"2.Model"<<endl;
                 cout<<"3.Tecnic responsable"<<endl;
                 cout<<"4.Mostrar tots els avions sense ordenar"<<endl;
-                obtenir_enter_rang(opc2,1,4);
+                cout<<"5.Torna al menu principal"<<endl;
+                obtenir_enter_rang(opc2,1,5);
+                cout<<endl;
                 switch(opc2){
 					case 1:
 						cout<<"Introdueix el codi a buscar: "<<endl;
@@ -622,6 +625,8 @@ int main(){
 						cin>>pos;
 						modificar_avio(avions,pos-1,A,api);
 						break;
+					case 5:
+						break;
 					default:;
 				}
                 break;
@@ -633,7 +638,9 @@ int main(){
                 cout<<"2.Model"<<endl;
                	cout<<"3.Tecnic responsable"<<endl;
                 cout<<"4.Mostrar tots els avions sense ordenar"<<endl;
-                obtenir_enter_rang(opc2,1,4);
+                cout<<"5.Torna al menu principal"<<endl;
+                obtenir_enter_rang(opc2,1,5);
+                cout<<endl;
                 switch(opc2){
 					case 1:
 						cout<<"Introdueix el codi a buscar: "<<endl;
@@ -677,6 +684,7 @@ int main(){
 						obtenir_enter_rang(pos,1,N);
 						eliminar_element(avions,N,pos,api,A);
 						break;
+					case 5:
 					default:;
 				}
                 break;
@@ -685,8 +693,9 @@ int main(){
                 //programa, accions, funcions	Mostrar Estadistiques
                 
                 cout<<"1.Llista completa dels avions"<<endl;
-                cout<<"2.API"<<endl<<endl;
+                cout<<"2.API"<<endl;
                 obtenir_enter_rang(opc2,1,2);
+                cout<<endl;
 				switch(opc2){
 					case 1:
 						cout<<"Avions:"<<endl<<endl;
