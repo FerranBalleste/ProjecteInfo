@@ -481,6 +481,18 @@ void eliminar_element(tAvio avions[], int & N, int c, tApi api[], int & A){  //c
        	cout<<"No s'ha eliminat"<<endl<<endl;
     }
 }
+void est_revisio(tAvio avions[], int N){
+	int t=0,d=0; //transitori=1, diari=2
+	for(int i=0;i<N;i++){
+		if(avions[i].revisio==1)
+			t++;
+		else if(avions[i].revisio==2)
+			d++;
+	}
+	cout<<"Hi han "<<N<<" avions, "<<t<<" transitoris i "<<d<<" diaris"<<endl;
+	cout<<"% transitoris = "<<t*100/N<<"%"<<endl;
+	cout<<"% diaris = "<<d*100/N<<"%"<<endl<<endl;
+}
 void guardar(tAvio avions[], int N, ofstream & dades){
 	for(int i=0; i<N; i++){
 		dades << avions[i].codi << ';';
@@ -694,7 +706,8 @@ int main(){
                 
                 cout<<"1.Llista completa dels avions"<<endl;
                 cout<<"2.API"<<endl;
-                obtenir_enter_rang(opc2,1,2);
+                cout<<"3.Estadistiques del tipus de revisio"<<endl;
+                obtenir_enter_rang(opc2,1,3);
                 cout<<endl;
 				switch(opc2){
 					case 1:
@@ -703,6 +716,9 @@ int main(){
 						break;
 					case 2:
 	                	escriure_api(api,A);
+	                	break;
+	                case 3:
+	                	est_revisio(avions,N);
 	                	break;
                 	default:;
             	}
