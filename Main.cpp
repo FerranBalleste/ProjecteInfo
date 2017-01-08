@@ -486,12 +486,27 @@ void est_revisio(tAvio avions[], int N){
 	for(int i=0;i<N;i++){
 		if(avions[i].revisio==1)
 			t++;
-		else if(avions[i].revisio==2)
+		else
 			d++;
 	}
-	cout<<"Hi han "<<N<<" avions, "<<t<<" transitoris i "<<d<<" diaris"<<endl;
+	cout<<"Hi han "<<N<<" avions: "<<t<<" transitoris i "<<d<<" diaris"<<endl;
 	cout<<"% transitoris = "<<t*100/N<<"%"<<endl;
 	cout<<"% diaris = "<<d*100/N<<"%"<<endl<<endl;
+}
+void est_estat(tAvio avions[], int N){
+	int p=0,r=0, b=0; //pendent=1, realitzat=2, baixa=3
+	for(int i=0;i<N;i++){
+		if(avions[i].estat==1)
+			p++;
+		else if(avions[i].estat==2)
+			r++;
+		else
+			b++;
+	}
+	cout<<"Hi han "<<N<<" avions: "<<p<<" pendents, "<<r<<" realitzats i "<<b<<" de baixa"<<endl;
+	cout<<"% pendents = "<<p*100/N<<"%"<<endl;
+	cout<<"% realitzats = "<<r*100/N<<"%"<<endl;
+	cout<<"% baixa = "<<b*100/N<<"%"<<endl<<endl;
 }
 void guardar(tAvio avions[], int N, ofstream & dades){
 	for(int i=0; i<N; i++){
@@ -707,7 +722,9 @@ int main(){
                 cout<<"1.Llista completa dels avions"<<endl;
                 cout<<"2.API"<<endl;
                 cout<<"3.Estadistiques del tipus de revisio"<<endl;
-                obtenir_enter_rang(opc2,1,3);
+                cout<<"4.Estadistiques del tipus d'estat'"<<endl;
+                cout<<"5.Tornar al menu principal"<<endl;
+                obtenir_enter_rang(opc2,1,5);
                 cout<<endl;
 				switch(opc2){
 					case 1:
@@ -719,6 +736,11 @@ int main(){
 	                	break;
 	                case 3:
 	                	est_revisio(avions,N);
+	                	break;
+	                case 4:
+	                	est_estat(avions,N);
+	                	break;
+	                case 5:
 	                	break;
                 	default:;
             	}
